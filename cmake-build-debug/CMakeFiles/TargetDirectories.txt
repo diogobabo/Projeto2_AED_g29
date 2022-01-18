@@ -1,3 +1,0 @@
-C:/Users/Diogo Babo/Desktop/Projeto2_AED/cmake-build-debug/CMakeFiles/Projeto2_AED.dir
-C:/Users/Diogo Babo/Desktop/Projeto2_AED/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Diogo Babo/Desktop/Projeto2_AED/cmake-build-debug/CMakeFiles/rebuild_cache.dir
