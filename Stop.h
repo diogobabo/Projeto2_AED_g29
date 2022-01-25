@@ -29,7 +29,7 @@ public:
     std::string getZone();
     double getLatitude();
     double getLongitude();
-
+    bool operator<(const Stop *s1) const;
 };
 
 

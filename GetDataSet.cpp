@@ -11,6 +11,7 @@ GetDataSet::GetDataSet(std::string stopFile) {
         exit(EXIT_FAILURE);
     }
     std::string stopString;
+    getline(StopFile,stopString);
     while(getline(StopFile,stopString)){
 
         std::stringstream str(stopString);

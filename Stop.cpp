@@ -54,3 +54,7 @@ double Stop::getLongitude() {
     return longitude;
 }
 
+bool Stop::operator<(const Stop *s1) const {
+    return this->code < s1->code;
+}
+
