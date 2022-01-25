@@ -6,8 +6,17 @@
 #define PROJETO2_AED_GETDATASET_H
 
 
-class GetDataSet {
+#include "bst.h"
+#include "Stop.h"
 
+
+class GetDataSet {
+private:
+    BST<Stop *> bstStop =  BST<Stop *>(new Stop("","","",0,0));
+
+public:
+    GetDataSet(std::string stopFile);
+    BST<Stop *> &getStops();
 };
 
 

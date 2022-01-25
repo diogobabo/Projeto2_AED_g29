@@ -1,7 +1,3 @@
-// AED 2021/2022 - Aula Pratica 07
-// Pedro Ribeiro (DCC/FCUP) [06/12/2012]
-// [ficheiro original de Ana Paula Rocha com algumas adicoes]
-
 #ifndef _BST_H_
 #define _BST_H_
 
@@ -50,10 +46,6 @@ class BST {
     friend class BSTItrPost<Comparable>;
     friend class BSTItrLevel<Comparable>;
     friend class iteratorBST<Comparable>;
-
-    // Metodos privados completos adicionados para a aula 07
-    bool isEqual(BinaryNode<Comparable>* n1, BinaryNode<Comparable>* n2) const;
-
 public:
     explicit BST(const Comparable& notFound);
     BST(const BST& rhs);
@@ -69,15 +61,7 @@ public:
     const BST& operator= (const BST& rhs);
     iteratorBST<Comparable> begin() const;
     iteratorBST<Comparable> end() const;
-
-    // Metodos completos adicionados para a aula 07
-    void insert(const vector<Comparable>& v);
-    bool operator== (const BST& t) const;
-
-    // Metodos a criar na aula 07
-    int balance(const Comparable& x) const;
-    bool isAVL() const;
-    void rightRotate(const Comparable& x);
+    int size(const Comparable& el) const;   //new
 };
 
 // Note that all "matching" is based on the < method.
@@ -475,56 +459,14 @@ bool iteratorBST<Comparable>::operator!= (const iteratorBST<Comparable>& it2) co
 }
 
 //--------------------------------------------------------
-// Metodos adicionados para a aula 07
-//--------------------------------------------------------
 
-// Inserir todos os elementos de um vector
 template <class Comparable>
-void BST<Comparable>::insert(const vector<Comparable>& v)  {
-    for (auto x : v) insert(x);
-}
-
-// Comparar topologia e valores de duas arvores
-template <class Comparable>
-bool BST<Comparable>::operator== (const BST& t) const {
-    return isEqual(root, t.root);
-}
-
-// Metodo usado pelo operador == para comparar arvores com raizes em n1 e n2
-template <class Comparable>
-bool BST<Comparable>::isEqual(BinaryNode<Comparable>* n1, BinaryNode<Comparable> *n2) const {
-    if (n1 == NULL && n2 == NULL) return true;
-    if (n1 == NULL || n2 == NULL) return false;
-    return (n1->element == n2->element) &&
-           isEqual(n1->left, n2->left) &&
-           isEqual(n1->right, n2->right);
-}
-
-// ----------------------------------------------------------
-// Exercicio 4: Brincando com arvores
-// ----------------------------------------------------------
-
-// ..............................
-// a) Desequilibrio de um no
-// TODO
-template <class Comparable>
-int BST<Comparable>::balance(const Comparable& x) const {
-  return 0;
-}
-
-// ..............................
-// b) E uma arvore AVL?
-// TODO
-template <class Comparable>
-bool BST<Comparable>::isAVL() const {
-  return false;
-}
-
-// ..............................
-// c) Rotação a direita
-// TODO
-template <class Comparable>
-void BST<Comparable>::rightRotate(const Comparable& x) {
+int BST<Comparable>::size(const Comparable& el) const {
+    int res = 0;
+    for(BSTItrIn<Comparable> it; !it.isAtEnd() ;it.advance()){
+        res ++;
+    }
+    return res;
 }
 
 #endif

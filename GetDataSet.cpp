@@ -3,3 +3,7 @@
 //
 
 #include "GetDataSet.h"
+
+GetDataSet::GetDataSet(std::string stopFile) {
+
+}
