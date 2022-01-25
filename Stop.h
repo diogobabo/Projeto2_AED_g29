@@ -12,12 +12,22 @@
 
 class Stop {
 private:
-    std::string Code,Name,Zone;
-    double Latitude,Longitude;
+    std::string code,name,zone;
+    double latitude,longitude;
     std::vector<Line> adj;
 public:
-    Stop(std::string Code,std::string Name,std::string Zone,double Latitude,double Longitude);
+    Stop(std::string Code,std::string name,std::string zone,double latitude,double longitude);
     void addOutgoingLine(Line line);
+    void setName(std::string name);
+    void setCode(std::string code);
+    void setZone(std::string zone);
+    void setLatitude(double lat);
+    void setLongitude(double lon);
+    std::string getCode();
+    std::string getName();
+    std::string getZone();
+    double getLatitude();
+    double getLongitude();
 
 };
 
