@@ -6,8 +6,22 @@
 #define PROJETO2_AED_LINE_H
 
 
-class Line {
+#include <string>
+#include "Stop.h"
 
+class Line {
+private:
+    enum TYPE{
+        AUTOCARRO,
+        ELETRICO
+    };
+    std::string name;
+    std::string code;
+    Stop dest;
+    bool atNight;
+    TYPE type;
+public:
+    Line(std::string code,std::string name,Stop dest,bool atNight,TYPE type);
 };
 
 

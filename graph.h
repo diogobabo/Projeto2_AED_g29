@@ -11,10 +11,10 @@
 using namespace std;
 
 class Graph {
-    Line line;// Edge
+    Line line;// Edge(linha)
 
 
-    Stop stop;// node
+    Stop stop;// node(bola)
     int size;               // Graph size (vertices are numbered from 1 to n)
     bool directed;        // false: undirect; true: directed
     vector<Stop> stops; // The list of nodes being represented
