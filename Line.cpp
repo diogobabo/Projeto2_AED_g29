@@ -4,5 +4,5 @@
 
 #include "Line.h"
 
-Line::Line(std::string code, std::string name, Stop dest, bool atNight, Line::TYPE type):code(code),name(name), dest(dest),atNight(atNight),type(type) {
+Line::Line(std::string code, std::string name, Stop dest, bool atNight, double distance,Line::TYPE type) : code(code),name(name), dest(dest),atNight(atNight),type(type), distance(distance){
 }

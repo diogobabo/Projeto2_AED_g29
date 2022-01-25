@@ -20,8 +20,9 @@ private:
     Stop dest;
     bool atNight;
     TYPE type;
+    double distance;
 public:
-    Line(std::string code,std::string name,Stop dest,bool atNight,TYPE type);
+    Line(std::string code,std::string name,Stop dest,bool atNight,double distance,TYPE type);
 };
 
 

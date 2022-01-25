@@ -6,8 +6,12 @@
 #define PROJETO2_AED_STOP_H
 
 
-class Stop {
+#include <string>
 
+class Stop {
+private:
+    std::string Code,Name,Zone;
+    double Latitude,Longitude;
 };
 
 
