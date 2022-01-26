@@ -3,13 +3,14 @@
 //
 
 #include "Stop.h"
+#include "Line.h"
 
 
 Stop::Stop(std::string code, std::string name, std::string zone, double latitude, double longitude) : code(code),name(name),zone(zone),latitude(latitude),longitude(longitude) {
 
 }
 
-void Stop::addOutgoingLine(Line line) {
+void Stop::addOutgoingLine(Line *line) {
     this->adj.push_back(line);
 }
 
@@ -51,5 +52,9 @@ double Stop::getLatitude() {
 
 double Stop::getLongitude() {
     return longitude;
+}
+
+bool Stop::operator<(const Stop *s1) const {
+    return this->code < s1->code;
 }
 

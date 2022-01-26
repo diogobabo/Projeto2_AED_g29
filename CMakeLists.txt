@@ -3,4 +3,4 @@ project(Projeto2_AED)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Projeto2_AED main.cpp graph.cpp bst.h graph.h Stop.cpp Stop.h Line.cpp Line.h BusLogistic.cpp BusLogistic.h GetDataSet.cpp GetDataSet.h InfoSTCP.cpp InfoSTCP.h)
+add_executable(Projeto2_AED graph.cpp graph.h bst.h Stop.cpp Stop.h Line.cpp Line.h BusLogistic.cpp BusLogistic.h GetDataSet.cpp GetDataSet.h InfoSTCP.cpp InfoSTCP.h main.cpp)

@@ -3,8 +3,9 @@
 //
 
 #include "Line.h"
+#include "Stop.h"
 
-Line::Line(std::string code, std::string name, Stop dest, bool atNight, double distance,Line::TYPE type) : code(code),name(name), dest(dest),atNight(atNight),type(type), distance(distance){
+Line::Line(std::string code, std::string name, Stop *dest, bool atNight, double distance,Line::TYPE type) : code(code),name(name), dest(dest),atNight(atNight),type(type), distance(distance){
 }
 
 void Line::setName(std::string name) {
@@ -15,7 +16,7 @@ void Line::setCode(std::string code) {
     this->code = code;
 }
 
-void Line::setDest(Stop dest) {
+void Line::setDest(Stop *dest) {
     this->dest=dest;
 }
 
@@ -39,7 +40,7 @@ std::string Line::getCode() {
     return code;
 }
 
-Stop Line::getDest() {
+Stop* Line::getDest() {
     return dest;
 }
 

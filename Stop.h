@@ -8,16 +8,17 @@
 
 #include <string>
 #include <vector>
-#include "Line.h"
+
+class Line;
 
 class Stop {
 private:
     std::string code,name,zone;
     double latitude,longitude;
-    std::vector<Line> adj;
+    std::vector<Line*> adj;
 public:
     Stop(std::string Code,std::string name,std::string zone,double latitude,double longitude);
-    void addOutgoingLine(Line line);
+    void addOutgoingLine(Line* line);
     void setName(std::string name);
     void setCode(std::string code);
     void setZone(std::string zone);
@@ -28,7 +29,7 @@ public:
     std::string getZone();
     double getLatitude();
     double getLongitude();
-
+    bool operator<(const Stop *s1) const;
 };
 
 

@@ -5,7 +5,8 @@
 #ifndef PROJETO2_AED_GETDATASET_H
 #define PROJETO2_AED_GETDATASET_H
 
-
+#include <sstream>
+#include <fstream>
 #include "bst.h"
 #include "Stop.h"
 
