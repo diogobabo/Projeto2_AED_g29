@@ -19,44 +19,36 @@ void InfoSTCP::readLines(std::string filename) {
     while(getline(lineFile,s)) {
         std::string code,name;
         std::stringstream str(s);
-
-        std::fstream lineDirO;
-        std::fstream lineDirI;
-
-        std::string nomeFich = "../dataset/line";
+        std::fstream lineDir;
+        std::string nomeFicheiro = "../dataset/line";
         getline(str,code,',');
         getline(str,name,',');
-        std::cout << code;
-        std::cout << name;
-        nomeFich += "_" + code;
-        std::string nomeFichO = nomeFich; // direcao 0
-        std::string nomeFichI = nomeFich; // direcao 1
-        nomeFichO += "_0.csv"; // nome ficheiro dir 0 top
-        nomeFichI += "_1.csv"; // nome ficheiro dir 1 top
-        lineDirO.open(nomeFichO);
-        if(!lineSpec) {
-            throw "line0 error";
+        nomeFicheiro += "_" + code + "_" + "0.csv";
+
+        // LER FICHEIRO 0
+        lineDir.open(nomeFicheiro);
+        if(!lineDir) {
+            exit(EXIT_FAILURE);
         }
-        std::string n;
-        getline(lineDirO,n);
-        int num = stoi(n);
-        for(int i = 0; i < num; i++) {
-            std::string codStop;
-            getline(lineDirO,codStop);
-            std::cout << codStop;
+
+        std::string codeStop;
+        getline(lineDir,codeStop); // ignorar primeira linha
+        while(getline(lineDir,codeStop)) { //aqui dentro crias as linhas
+            std::cout << codeStop << std::endl;
         }
-        lineDirI.open(nomeFichI);
-        if(!lineDirI.is_open()){
-            throw "line1 error";
+        lineDir.close();
+
+        // LER FICHEIRO 1
+        nomeFicheiro.replace(nomeFicheiro.size() - 5,1,"1");
+        lineDir.open(nomeFicheiro);
+        if(!lineDir){
+            exit(EXIT_FAILURE);
         }
-        getline(lineDirI,n);
-        if(n == "0"){
-            return;
+
+        getline(lineDir,codeStop); // ignorar primeira linha
+        while(getline(lineDir,codeStop)) { //aqui dentro crias as linhas
+            std::cout << codeStop << std::endl;
         }
-        for(int i = 0; i < num; i++) {
-            std::string codStop;
-            getline(lineDirI,codStop);
-            std::cout << codStop;
-        }
+        lineDir.close();
     }
 }
