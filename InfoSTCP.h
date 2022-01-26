@@ -10,10 +10,14 @@
 #include "Line.h"
 #include "bst.h"
 #include "Stop.h"
+#include <cmath>
+#include "GetDataSet.h"
+#include <iostream>
 
 class InfoSTCP {
 private:
     BST<Stop *> bstStop =  BST<Stop *>(new Stop("","","",0,0));
+    static double haversine(Stop* stop1,Stop* stop2);
 public:
     InfoSTCP();
     std::vector <Line> lines;

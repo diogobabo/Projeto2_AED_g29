@@ -3,10 +3,6 @@
 //
 
 #include "InfoSTCP.h"
-#include "GetDataSet.h"
-#include <fstream>
-#include <sstream>
-#include <iostream>
 
 void InfoSTCP::readLines(std::string filename) {
     std::fstream lineFile;
@@ -63,6 +59,28 @@ InfoSTCP::InfoSTCP() {
     bstStop = getbst.getStops();
     readLines("../dataset/lines.csv");
 
+}
+double InfoSTCP::haversine(Stop* stop1,Stop* stop2)
+{
+    // distance between latitudes
+    // and longitudes
+    double lat2 = stop2->getLatitude(),lat1= stop1->getLatitude(),lon2= stop2->getLongitude(),lon1= stop1->getLongitude();
+    double dLat = (lat2 - lat1) *
+                  M_PI / 180.0;
+    double dLon = (lon2 - lon1) *
+                  M_PI / 180.0;
+
+    // convert to radians
+    lat1 = (lat1) * M_PI / 180.0;
+    lat2 = (lat2) * M_PI / 180.0;
+
+    // apply formulae
+    double a = pow(sin(dLat / 2), 2) +
+               pow(sin(dLon / 2), 2) *
+               cos(lat1) * cos(lat2);
+    double rad = 6371;
+    double c = 2 * asin(sqrt(a));
+    return rad * c;
 }
 
 void InfoSTCP::start() {
