@@ -12,7 +12,7 @@ void InfoSTCP::readLines(std::string filename) {
     std::fstream lineSpec;
     lineFile.open(filename);
     if(!lineFile) {
-        throw "lineFile error";
+        exit(EXIT_FAILURE);
     }
     std::string s;
     getline(lineFile,s);
