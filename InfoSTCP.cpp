@@ -3,6 +3,7 @@
 //
 
 #include "InfoSTCP.h"
+#include "GetDataSet.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -30,9 +31,11 @@ void InfoSTCP::readLines(std::string filename) {
         if(!lineDir) {
             exit(EXIT_FAILURE);
         }
+// CONSTRUIR LINHAS PARA STOPS
 
         std::string codeStop;
-        getline(lineDir,codeStop); // ignorar primeira linha
+        getline(lineDir,codeStop);// ignorar primeira linha
+
         while(getline(lineDir,codeStop)) { //aqui dentro crias as linhas
             std::cout << codeStop << std::endl;
         }
@@ -50,5 +53,18 @@ void InfoSTCP::readLines(std::string filename) {
             std::cout << codeStop << std::endl;
         }
         lineDir.close();
+
     }
+
+}
+
+InfoSTCP::InfoSTCP() {
+    GetDataSet getbst("../dataset/stops.csv");
+    bstStop = getbst.getStops();
+    readLines("../dataset/lines.csv");
+
+}
+
+void InfoSTCP::start() {
+
 }

@@ -19,6 +19,7 @@ private:
 public:
     Stop(std::string Code,std::string name,std::string zone,double latitude,double longitude);
     void addOutgoingLine(Line* line);
+    std::vector<Line*>& getAdj();
     void setName(std::string name);
     void setCode(std::string code);
     void setZone(std::string zone);
