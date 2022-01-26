@@ -6,7 +6,7 @@
 #include "Line.h"
 
 
-Stop::Stop(std::string code, std::string name, std::string zone, double latitude, double longitude) : code(code),name(name),zone(zone),latitude(latitude),longitude(longitude) {
+Stop::Stop(int number,std::string code, std::string name, std::string zone, double latitude, double longitude) :number(number), code(code),name(name),zone(zone),latitude(latitude),longitude(longitude) {
 
 }
 
@@ -55,10 +55,18 @@ double Stop::getLongitude() {
 }
 
 bool Stop::operator<(const Stop *s1) const {
-    return this->code < s1->code;
+    return this->number < s1->number;
 }
 
 std::vector<Line *> &Stop::getAdj() {
     return adj;
+}
+
+bool Stop::operator==(const Stop *s1) const {
+    return this->number == s1->number;
+}
+
+int Stop::getNum() {
+    return number;
 }
 

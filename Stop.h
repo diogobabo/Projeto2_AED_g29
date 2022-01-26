@@ -13,12 +13,14 @@ class Line;
 
 class Stop {
 private:
+    int number;
     std::string code,name,zone;
     double latitude,longitude;
     std::vector<Line*> adj;
 public:
-    Stop(std::string Code,std::string name,std::string zone,double latitude,double longitude);
+    Stop(int number,std::string Code,std::string name,std::string zone,double latitude,double longitude);
     void addOutgoingLine(Line* line);
+    int getNum();
     std::vector<Line*>& getAdj();
     void setName(std::string name);
     void setCode(std::string code);
@@ -31,6 +33,7 @@ public:
     double getLatitude();
     double getLongitude();
     bool operator<(const Stop *s1) const;
+    bool operator==(const Stop *s1) const;
 };
 
 

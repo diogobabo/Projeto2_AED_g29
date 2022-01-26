@@ -14,13 +14,21 @@ void InfoSTCP::readLines(std::string filename) {
     std::string s;
     getline(lineFile,s);
     while(getline(lineFile,s)) {
+        bool night = false;
         std::string code,name;
+
         std::stringstream str(s);
         std::fstream lineDir;
         std::string nomeFicheiro = "../dataset/line";
+
         getline(str,code,',');
         getline(str,name,',');
+
         nomeFicheiro += "_" + code + "_" + "0.csv";
+
+        if(code.at(code.length() - 1) == 'M') {
+            night = true;
+        }
 
         // LER FICHEIRO 0
         lineDir.open(nomeFicheiro);
@@ -31,9 +39,24 @@ void InfoSTCP::readLines(std::string filename) {
 
         std::string codeStop;
         getline(lineDir,codeStop);// ignorar primeira linha
+        int lineNumber = stoi(codeStop);
 
-        while(getline(lineDir,codeStop)) { //aqui dentro crias as linhas
-            std::cout << codeStop << std::endl;
+        getline(lineDir,codeStop);
+
+        int stopNumberSRC = (stopMap.find(codeStop))->second;
+        Stop *src = stopsvec.at(stopNumberSRC);
+
+        for(int var = 1; var<lineNumber; var++) { //aqui dentro crias as linhas
+            getline(lineDir,codeStop);
+
+            int stopNumberDEST = (stopMap.find(codeStop))->second;
+            Stop *dest = stopsvec.at(stopNumberDEST);
+            Line line1(code,name,dest,night, haversine(src,dest),Line::AUTOCARRO);
+            Line *line = new Line(line1);
+            graph.addEdge(stopNumberSRC,line);
+
+            stopNumberSRC = stopNumberDEST;
+            src = dest;
         }
         lineDir.close();
 
@@ -45,8 +68,28 @@ void InfoSTCP::readLines(std::string filename) {
         }
 
         getline(lineDir,codeStop); // ignorar primeira linha
-        while(getline(lineDir,codeStop)) { //aqui dentro crias as linhas
-            std::cout << codeStop << std::endl;
+
+        lineNumber = stoi(codeStop);
+        if(lineNumber == 0){
+            lineDir.close();
+            continue;
+        }
+        getline(lineDir,codeStop);
+
+        stopNumberSRC = (stopMap.find(codeStop))->second;
+        src = stopsvec.at(stopNumberSRC);
+
+        for(int var = 1; var<lineNumber; var++) { //aqui dentro crias as linhas
+            getline(lineDir,codeStop);
+
+            int stopNumberDEST = (stopMap.find(codeStop))->second;
+            Stop *dest = stopsvec.at(stopNumberDEST);
+            Line line1(code,name,dest,night, haversine(src,dest),Line::AUTOCARRO);
+            Line *line = new Line(line1);
+            graph.addEdge(stopNumberSRC,line);
+
+            stopNumberSRC = stopNumberDEST;
+            src = dest;
         }
         lineDir.close();
 
@@ -56,7 +99,16 @@ void InfoSTCP::readLines(std::string filename) {
 
 InfoSTCP::InfoSTCP() {
     GetDataSet getbst("../dataset/stops.csv");
-    bstStop = getbst.getStops();
+
+    stopsvec = getbst.getStops();
+    stopsvec.insert(stopsvec.begin(),new Stop(0,"","","",0,0));
+
+    stopMap = getbst.getMap();
+
+    Graph g(stopsvec,stopsvec.size(),false);
+
+    this->graph = g;
+
     readLines("../dataset/lines.csv");
 
 }

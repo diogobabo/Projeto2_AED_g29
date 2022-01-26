@@ -12,8 +12,9 @@ GetDataSet::GetDataSet(std::string stopFile) {
     }
     std::string stopString;
     getline(StopFile,stopString);
+    int counter = 0;
     while(getline(StopFile,stopString)){
-
+        counter++;
         std::stringstream str(stopString);
 
         std::string code,name,zone,la,lo;
@@ -24,13 +25,18 @@ GetDataSet::GetDataSet(std::string stopFile) {
         getline(str,la,',');
         getline(str,lo,',');
 
-        Stop stop1(code,name,zone,stod(la),stod(lo));
+        Stop stop1(counter,code,name,zone,stod(la),stod(lo));
         Stop * stop = new Stop(stop1);
-        bstStop.insert(stop);
+        stopsvec.push_back(stop);
+        mappedValues.insert(std::pair<std::string ,int>(code,counter));
     }
     StopFile.close();
 }
 
-BST<Stop *> &GetDataSet::getStops() {
-    return bstStop;
+std::vector<Stop *> &GetDataSet::getStops() {
+    return stopsvec;
+}
+
+std::map<std::string, int> &GetDataSet::getMap() {
+    return mappedValues;
 }

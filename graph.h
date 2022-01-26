@@ -7,23 +7,22 @@
 #include <iostream>
 #include "Line.h"
 #include "Stop.h"
+#include <algorithm>
 
 using namespace std;
 
 class Graph {
-    Line line;// Edge(linha)
+    // line é Edge(linha)
+    // stop é node(bola)
 
-
-    Stop stop;// node(bola)
     int size;               // Graph size (vertices are numbered from 1 to n)
     bool directed;        // false: undirect; true: directed
-    vector<Stop> stops; // The list of nodes being represented
+    vector<Stop *> nodes; // The list of nodes being represented
 
 public:
-
-    Graph(int nodes, bool dir = false);
-
-    void addEdge(int src, int dest, int weight = 1);
+    Graph();
+    Graph(vector<Stop *>& vec,int size, bool dir = false);
+    void addEdge(int src,Line *line);
 
 };
 

@@ -12,17 +12,17 @@ class Stop;
 
 class Line {
 private:
-    enum TYPE{
-        AUTOCARRO,
-        ELETRICO
-    };
     std::string name;
     std::string code;
     Stop *dest;
     bool atNight;
-    TYPE type;
     double distance;
 public:
+    enum TYPE{
+        AUTOCARRO,
+        ELETRICO
+    };
+    TYPE type;
     Line(std::string code,std::string name,Stop *dest,bool atNight,double distance,TYPE type);
     void setName(std::string name);
     void setCode(std::string code);

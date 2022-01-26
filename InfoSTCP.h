@@ -12,15 +12,17 @@
 #include "Stop.h"
 #include <cmath>
 #include "GetDataSet.h"
+#include "graph.h"
 #include <iostream>
 
 class InfoSTCP {
 private:
-    BST<Stop *> bstStop =  BST<Stop *>(new Stop("","","",0,0));
+    std::vector<Stop *> stopsvec;
     static double haversine(Stop* stop1,Stop* stop2);
+    std::map<std::string,int> stopMap;
+    Graph graph;
 public:
     InfoSTCP();
-    std::vector <Line> lines;
     void readLines(std::string filename);
     void start();
 

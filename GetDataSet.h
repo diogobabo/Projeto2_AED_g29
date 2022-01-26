@@ -7,17 +7,19 @@
 
 #include <sstream>
 #include <fstream>
-#include "bst.h"
 #include "Stop.h"
-
+#include <map>
 
 class GetDataSet {
 private:
-    BST<Stop *> bstStop =  BST<Stop *>(new Stop("","","",0,0));
+    std::vector<Stop *> stopsvec;
+
+    std::map<std::string,int> mappedValues;
 
 public:
     GetDataSet(std::string stopFile);
-    BST<Stop *> &getStops();
+    std::vector<Stop *> &getStops();
+    std::map<std::string,int> &getMap();
 };
 
 
