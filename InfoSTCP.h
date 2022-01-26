@@ -6,7 +6,14 @@
 #define PROJETO2_AED_INFOSTCP_H
 
 
+#include <string>
+#include <vector>
+#include "Line.h"
+
 class InfoSTCP {
+public:
+    std::vector <Line> lines;
+    void readLines(std::string filename);
 
 };
 
