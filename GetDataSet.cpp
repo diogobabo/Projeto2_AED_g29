@@ -28,7 +28,7 @@ GetDataSet::GetDataSet(std::string stopFile) {
         Stop * stop = new Stop(stop1);
         bstStop.insert(stop);
     }
-
+    StopFile.close();
 }
 
 BST<Stop *> &GetDataSet::getStops() {

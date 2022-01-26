@@ -5,10 +5,10 @@
 #ifndef PROJETO2_AED_INFOSTCP_H
 #define PROJETO2_AED_INFOSTCP_H
 
-
 #include <string>
 #include <vector>
 #include "Line.h"
+
 
 class InfoSTCP {
 public:

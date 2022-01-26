@@ -19,12 +19,13 @@ void InfoSTCP::readLines(std::string filename) {
     while(getline(lineFile,s)) {
         std::string code,name;
         std::stringstream str(s);
-        std::string ff;
+
         std::fstream lineDirO;
         std::fstream lineDirI;
-        std::string nomeFich = "line";
+
+        std::string nomeFich = "../dataset/line";
         getline(str,code,',');
-        getline(str,name);
+        getline(str,name,',');
         std::cout << code;
         std::cout << name;
         nomeFich += "_" + code;
@@ -41,18 +42,21 @@ void InfoSTCP::readLines(std::string filename) {
         int num = stoi(n);
         for(int i = 0; i < num; i++) {
             std::string codStop;
-            std::cout << codStop;
             getline(lineDirO,codStop);
+            std::cout << codStop;
         }
         lineDirI.open(nomeFichI);
-        if(!lineDirI.peek() == EOF) {
-            getline(lineDirI,n);
-            num = stoi(n);
-            for(int j = 0; j < num; j++) {
-                std::string codStopI;
-                std::cout << codStopI;
-                getline(lineDirI,codStopI);
-            }
+        if(!lineDirI.is_open()){
+            throw "line1 error";
+        }
+        getline(lineDirI,n);
+        if(n == "0"){
+            return;
+        }
+        for(int i = 0; i < num; i++) {
+            std::string codStop;
+            getline(lineDirI,codStop);
+            std::cout << codStop;
         }
     }
 }
