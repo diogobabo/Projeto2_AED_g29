@@ -6,6 +6,7 @@
 #include "Stop.h"
 
 Line::Line(std::string code, std::string name, Stop *dest, bool atNight, double distance,Line::TYPE type) : code(code),name(name), dest(dest),atNight(atNight),type(type), distance(distance){
+    weight = 0;
 }
 
 void Line::setName(std::string name) {

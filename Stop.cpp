@@ -7,7 +7,9 @@
 
 
 Stop::Stop(int number,std::string code, std::string name, std::string zone, double latitude, double longitude) :number(number), code(code),name(name),zone(zone),latitude(latitude),longitude(longitude) {
-
+    visited = false;
+    dist = 0;
+    pred = 0;
 }
 
 void Stop::addOutgoingLine(Line *line) {

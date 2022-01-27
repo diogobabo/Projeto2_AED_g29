@@ -36,6 +36,7 @@ public:
     bool getNight();
     TYPE getType();
     double getDistance();
+    int weight;
 };
 
 

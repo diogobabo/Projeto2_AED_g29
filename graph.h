@@ -8,8 +8,9 @@
 #include "Line.h"
 #include "Stop.h"
 #include <algorithm>
+#include "MinHeap.h"
 
-using namespace std;
+#define INF (INT_MAX/2)
 
 class Graph {
     // line é Edge(linha)
@@ -17,13 +18,14 @@ class Graph {
 
     int size;               // Graph size (vertices are numbered from 1 to n)
     bool directed;        // false: undirect; true: directed
-    vector<Stop *> nodes; // The list of nodes being represented
+    std::vector<Stop *> nodes; // The list of nodes being represented
 
 public:
     Graph();
-    Graph(vector<Stop *>& vec,int size, bool dir = false);
+    Graph(std::vector<Stop *>& vec,int size, bool dir = false);
     void addEdge(int src,Line *line);
-
+    std::list<int> dijkstra_path(int a, int b);
+    void dijkstra(int s);
 };
 
 #endif

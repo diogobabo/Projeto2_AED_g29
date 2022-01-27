@@ -34,6 +34,9 @@ public:
     double getLongitude();
     bool operator<(const Stop *s1) const;
     bool operator==(const Stop *s1) const;
+    bool visited;
+    int dist;
+    int pred;
 };
 
 
