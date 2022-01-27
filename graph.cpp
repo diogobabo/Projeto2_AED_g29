@@ -4,7 +4,8 @@
 
 // Constructor: nr nodes and direction (default: undirected)
 
-Graph::Graph(std::vector<Stop *> &vec, int size, bool dir):nodes(vec),size(size),directed(dir) {
+Graph::Graph(std::vector<Stop *> &vec, int size, bool dir):size(size),directed(dir) {
+    this->nodes = vec;
 }
 
 // Add edge from source to destination with a certain weight
@@ -79,6 +80,10 @@ std::list<int> Graph::bfs_path(int a, int b) {
     bfs(a);
 
     return std::list<int>();
+}
+
+void Graph::addNode(Stop *stop1) {
+
 }
 
 

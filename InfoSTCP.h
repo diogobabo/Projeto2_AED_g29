@@ -25,6 +25,9 @@ public:
     InfoSTCP();
     void readLines(std::string filename);
     void start();
+    void addStop(std::string code, std::string name, std::string zone, long lat, long lon);
+    void addLine();
+    void checkInput();
 
 };
 

@@ -104,9 +104,7 @@ InfoSTCP::InfoSTCP() {
     stopsvec.insert(stopsvec.begin(),new Stop(0,"","","",0,0));
 
     stopMap = getbst.getMap();
-
     Graph g(stopsvec,stopsvec.size(),false);
-
     this->graph = g;
 
     readLines("../dataset/lines.csv");
@@ -144,6 +142,18 @@ void InfoSTCP::start() {
             std::cout << stopsvec[sus]->getCode() << " using line: " << stopsvec[sus]->getLinePred()->getCode()<<std::endl;
         }
     }
+}
+
+void
+InfoSTCP::addStop(std::string code, std::string name, std::string zone, long lat, long lon) {
+    int number;
+    number = stopMap.size() + 1;
+    Stop stop1(number,code,name,zone,lat,lon);
+    Stop * stop = new Stop(stop1);
+    pair<std::string,int> stopPair(code,number);
+    stopMap.insert(stopPair);
+    stopsvec.push_back(stop);
+
 }
 
 

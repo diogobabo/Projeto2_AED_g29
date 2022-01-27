@@ -27,6 +27,7 @@ public:
     std::list<int> dijkstra_path(int a, int b);
     void dijkstra(int s);
     void bfs(int v);
+    void addNode(Stop *stop1);
     std::list<int> bfs_path(int a, int b);
 };
 
