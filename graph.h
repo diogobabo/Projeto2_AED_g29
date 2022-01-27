@@ -26,6 +26,8 @@ public:
     void addEdge(int src,Line *line);
     std::list<int> dijkstra_path(int a, int b);
     void dijkstra(int s);
+    void bfs(int v);
+    std::list<int> bfs_path(int a, int b);
 };
 
 #endif

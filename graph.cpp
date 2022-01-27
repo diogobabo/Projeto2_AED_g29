@@ -1,4 +1,5 @@
 
+#include <queue>
 #include "graph.h"
 
 // Constructor: nr nodes and direction (default: undirected)
@@ -53,6 +54,31 @@ void Graph::dijkstra(int s) {
             }
         }
     }
+}
+void Graph::bfs(int v) {
+// initialize all nodes as unvisited
+    for ( int v=1; v<=size; v++) nodes[v]->visited = false ;
+    std::queue<int > q; // queue of unvisited nodes
+    q.push(v);
+    nodes[v]->visited = true ;
+    while (!q.empty ()) { // while there are still unprocessed nodes
+        int u = q.front ();
+        q.pop (); // remove first element of q
+        cout << u << " "; // show node order
+        for (auto e : nodes[u]->getAdj()) {
+            int w = e->getDest()->getNum();
+            if (! nodes[w]->visited) { // new node!
+                q.push(w);
+                nodes[w]->visited = true ;
+            }
+        }
+    }
+}
+
+std::list<int> Graph::bfs_path(int a, int b) {
+    bfs(a);
+
+    return std::list<int>();
 }
 
 
