@@ -17,10 +17,12 @@
 
 class InfoSTCP {
 private:
-    std::vector<Stop *> stopsvec;
+    std::vector<Stop *> stopsVec;
+    std::vector<Line *> lineVec;
     static double haversine(Stop* stop1,Stop* stop2);
     std::map<std::string,int> stopMap;
     Graph graph;
+    void functionTest();
 public:
     InfoSTCP();
     void readLines(std::string filename);

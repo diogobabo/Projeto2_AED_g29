@@ -23,6 +23,7 @@ public:
         ELETRICO,
         START
     };
+    bool null;
     TYPE type;
     Line(std::string code,std::string name,Stop *dest,bool atNight,double distance,TYPE type);
     Line(TYPE type);
@@ -38,7 +39,8 @@ public:
     bool getNight();
     TYPE getType();
     double getDistance();
-    int weight;
+
+    double weight;
 };
 
 

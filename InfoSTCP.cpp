@@ -44,16 +44,17 @@ void InfoSTCP::readLines(std::string filename) {
         getline(lineDir,codeStop);
 
         int stopNumberSRC = (stopMap.find(codeStop))->second;
-        Stop *src = stopsvec.at(stopNumberSRC);
+        Stop *src = stopsVec.at(stopNumberSRC);
 
         for(int var = 1; var<lineNumber; var++) { //aqui dentro crias as linhas
             getline(lineDir,codeStop);
 
             int stopNumberDEST = (stopMap.find(codeStop))->second;
-            Stop *dest = stopsvec.at(stopNumberDEST);
+            Stop *dest = stopsVec.at(stopNumberDEST);
             Line line1(code,name,dest,night, haversine(src,dest),Line::AUTOCARRO);
             Line *line = new Line(line1);
             graph.addEdge(stopNumberSRC,line);
+            lineVec.push_back(line);
 
             stopNumberSRC = stopNumberDEST;
             src = dest;
@@ -77,16 +78,17 @@ void InfoSTCP::readLines(std::string filename) {
         getline(lineDir,codeStop);
 
         stopNumberSRC = (stopMap.find(codeStop))->second;
-        src = stopsvec.at(stopNumberSRC);
+        src = stopsVec.at(stopNumberSRC);
 
         for(int var = 1; var<lineNumber; var++) { //aqui dentro crias as linhas
             getline(lineDir,codeStop);
 
             int stopNumberDEST = (stopMap.find(codeStop))->second;
-            Stop *dest = stopsvec.at(stopNumberDEST);
+            Stop *dest = stopsVec.at(stopNumberDEST);
             Line line1(code,name,dest,night, haversine(src,dest),Line::AUTOCARRO);
             Line *line = new Line(line1);
             graph.addEdge(stopNumberSRC,line);
+            lineVec.push_back(line);
 
             stopNumberSRC = stopNumberDEST;
             src = dest;
@@ -100,11 +102,11 @@ void InfoSTCP::readLines(std::string filename) {
 InfoSTCP::InfoSTCP() {
     GetDataSet getbst("../dataset/stops.csv");
 
-    stopsvec = getbst.getStops();
-    stopsvec.insert(stopsvec.begin(),new Stop(0,"","","",0,0));
+    stopsVec = getbst.getStops();
+    stopsVec.insert(stopsVec.begin(),new Stop(0,"","","",0,0));
 
     stopMap = getbst.getMap();
-    Graph g(stopsvec,stopsvec.size(),false);
+    Graph g(stopsVec,stopsVec.size(),false);
     this->graph = g;
 
     readLines("../dataset/lines.csv");
@@ -134,26 +136,34 @@ double InfoSTCP::haversine(Stop* stop1,Stop* stop2)
 }
 
 void InfoSTCP::start() {
-    std::list<int> l = graph.dijkstra_path(stopMap.find("CVI6")->second,stopMap.find("DL5")->second);
+    functionTest();
+    std::list<int> l = graph.dijkstra_path(stopMap.find("PDC")->second,stopMap.find("MAKR4")->second);
+
     for(auto sus:l){
-        if(stopsvec[sus]->getLinePred()->type == Line::START)
-            std::cout << stopsvec[sus]->getCode() << " Start" <<std::endl;
+        if(stopsVec[sus]->getLinePred()->type == Line::START)
+            std::cout << stopsVec[sus]->getCode() << " " << stopsVec[sus]->getName() << " Start" <<std::endl;
         else{
-            std::cout << stopsvec[sus]->getCode() << " using line: " << stopsvec[sus]->getLinePred()->getCode()<<std::endl;
+            std::cout << stopsVec[sus]->getCode() << " " << stopsVec[sus]->getName() << " using line: " << stopsVec[sus]->getLinePred()->getCode()<<std::endl;
         }
     }
 }
 
-void
-InfoSTCP::addStop(std::string code, std::string name, std::string zone, long lat, long lon) {
+void InfoSTCP::addStop(std::string code, std::string name, std::string zone, long lat, long lon) {
     int number;
     number = stopMap.size() + 1;
     Stop stop1(number,code,name,zone,lat,lon);
     Stop * stop = new Stop(stop1);
     pair<std::string,int> stopPair(code,number);
     stopMap.insert(stopPair);
-    stopsvec.push_back(stop);
+    stopsVec.push_back(stop);
 
+}
+
+void InfoSTCP::functionTest() {
+    for(auto sus:lineVec){
+        if(sus->getNight())sus->null=true;
+        else if(sus->getType() != Line::AUTOCARRO)sus->null=true;
+    }
 }
 
 

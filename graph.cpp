@@ -46,8 +46,9 @@ void Graph::dijkstra(int s) {
         int u = q.removeMin();
         nodes[u]->visited = true;
         for (auto e : nodes[u]->getAdj()) {
+            if(e->null)continue;
             int v = e->getDest()->getNum();
-            int w = e->weight;
+            double w = e->weight;
             if (!nodes[v]->visited && nodes[u]->dist + w < nodes[v]->dist) {
                 nodes[v]->dist = nodes[u]->dist + w;
                 q.decreaseKey(v, nodes[v]->dist);
