@@ -20,10 +20,12 @@ private:
 public:
     enum TYPE{
         AUTOCARRO,
-        ELETRICO
+        ELETRICO,
+        START
     };
     TYPE type;
     Line(std::string code,std::string name,Stop *dest,bool atNight,double distance,TYPE type);
+    Line(TYPE type);
     void setName(std::string name);
     void setCode(std::string code);
     void setDest(Stop *dest);

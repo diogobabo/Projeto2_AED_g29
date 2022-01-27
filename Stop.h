@@ -17,6 +17,8 @@ private:
     std::string code,name,zone;
     double latitude,longitude;
     std::vector<Line*> adj;
+    Line* lineUsedToArrive;
+    int pred;
 public:
     Stop(int number,std::string Code,std::string name,std::string zone,double latitude,double longitude);
     void addOutgoingLine(Line* line);
@@ -34,9 +36,12 @@ public:
     double getLongitude();
     bool operator<(const Stop *s1) const;
     bool operator==(const Stop *s1) const;
+    void setPred(int pred,Line* line);
+    int getPred();
+    Line* getLinePred();
     bool visited;
     int dist;
-    int pred;
+
 };
 
 

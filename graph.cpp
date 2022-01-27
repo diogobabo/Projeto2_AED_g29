@@ -24,7 +24,7 @@ std::list<int> Graph::dijkstra_path(int a, int b) {
     path.push_back(b);
     int v = b;
     while (v != a) {
-        v = nodes[v]->pred;
+        v = nodes[v]->getPred();
         path.push_front(v);
     }
     return path;
@@ -39,7 +39,7 @@ void Graph::dijkstra(int s) {
     }
     nodes[s]->dist = 0;
     q.decreaseKey(s, 0);
-    nodes[s]->pred = s;
+    nodes[s]->setPred(s,new Line(Line::START)) ;
     while (q.getSize()>0) {
         int u = q.removeMin();
         // cout << "Node " << u << " with dist = " << nodes[u].dist << endl;
@@ -50,7 +50,7 @@ void Graph::dijkstra(int s) {
             if (!nodes[v]->visited && nodes[u]->dist + w < nodes[v]->dist) {
                 nodes[v]->dist = nodes[u]->dist + w;
                 q.decreaseKey(v, nodes[v]->dist);
-                nodes[v]->pred = u;
+                nodes[v]->setPred(u,e);
             }
         }
     }

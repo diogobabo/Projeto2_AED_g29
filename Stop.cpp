@@ -72,3 +72,16 @@ int Stop::getNum() {
     return number;
 }
 
+void Stop::setPred(int pred, Line *line) {
+    this-> pred = pred;
+    lineUsedToArrive = line;
+}
+
+int Stop::getPred() {
+    return pred;
+}
+
+Line *Stop::getLinePred() {
+    return lineUsedToArrive;
+}
+

@@ -138,7 +138,11 @@ double InfoSTCP::haversine(Stop* stop1,Stop* stop2)
 void InfoSTCP::start() {
     std::list<int> l = graph.dijkstra_path(stopMap.find("INF1")->second,stopMap.find("DL5")->second);
     for(auto sus:l){
-        std::cout << stopsvec[sus]->getCode() << " "<< stopsvec[sus]->getName() <<std::endl;
+        if(stopsvec[sus]->getLinePred()->type == Line::START)
+            std::cout << stopsvec[sus]->getCode() << " Start" <<std::endl;
+        else{
+            std::cout << stopsvec[sus]->getCode() << " using line: " << stopsvec[sus]->getLinePred()->getCode()<<std::endl;
+        }
     }
 }
 

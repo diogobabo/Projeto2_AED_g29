@@ -56,3 +56,7 @@ Line::TYPE Line::getType() {
 double Line::getDistance() {
     return distance;
 }
+
+Line::Line(Line::TYPE type) {
+    this->type = type;
+}
