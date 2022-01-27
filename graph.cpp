@@ -42,7 +42,6 @@ void Graph::dijkstra(int s) {
     nodes[s]->setPred(s,new Line(Line::START)) ;
     while (q.getSize()>0) {
         int u = q.removeMin();
-        // cout << "Node " << u << " with dist = " << nodes[u].dist << endl;
         nodes[u]->visited = true;
         for (auto e : nodes[u]->getAdj()) {
             int v = e->getDest()->getNum();
