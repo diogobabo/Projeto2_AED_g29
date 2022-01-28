@@ -1,9 +1,8 @@
-#include <iostream>
-#include "GetDataSet.h"
+
 #include "InfoSTCP.h"
 
 int main() {
     InfoSTCP oi;
-    oi.start();
+    oi.menu();
     return 0;
 }

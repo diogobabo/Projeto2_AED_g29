@@ -5,11 +5,6 @@
 #ifndef PROJETO2_AED_INFOSTCP_H
 #define PROJETO2_AED_INFOSTCP_H
 
-#ifdef _WIN32
-#define CLEAR "cls"
-#else
-#define CLEAR "clear"
-#endif
 
 #include <string>
 #include <vector>
@@ -35,17 +30,17 @@ private:
     void reduceArtificialLineVec();
     void enlargeArtificialLineVec(double lastWalkingDistance);
     void showMenu();
-    void menu();
+    void start();
     void showStatusBar(double progress);
+    void settings();
 public:
     InfoSTCP();
     void setNewWalkDistance(double newWalkingDistance);
     void readLines(const std::string& filename);
-    void start();
     void addStop(std::string code, std::string name, std::string zone, long lat, long lon);
     void addLine();
     void checkInput();
-
+    void menu();
 };
 
 

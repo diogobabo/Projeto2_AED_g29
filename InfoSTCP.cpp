@@ -121,11 +121,11 @@ InfoSTCP::InfoSTCP() {
     this->graph = g;
 
     readLines("../dataset/lines.csv");
-    setNewWalkDistance(0.1);
 
 }
 double InfoSTCP::haversine(Stop* stop1,Stop* stop2)
 {
+    //double M_PI = 3.14159265358979323846;
     // distance between latitudes
     // and longitudes
     double lat2 = stop2->getLatitude(),lat1= stop1->getLatitude(),lon2= stop2->getLongitude(),lon1= stop1->getLongitude();
@@ -154,8 +154,10 @@ void InfoSTCP::start() {
     for(auto sus:l){
         if(stopsVec[sus]->getLinePred()->type == Line::START)
             std::cout << stopsVec[sus]->getCode() << " " << stopsVec[sus]->getName() << " Start" <<std::endl;
+        else if(stopsVec[sus]->getLinePred()->type == Line::WALKING)
+            std::cout << stopsVec[sus]->getCode() << " " << stopsVec[sus]->getName() << " " << stopsVec[sus]->getLinePred()->getName()<<std::endl;
         else{
-            std::cout << stopsVec[sus]->getCode() << " " << stopsVec[sus]->getName() << " using line: " << stopsVec[sus]->getLinePred()->getCode()<<std::endl;
+                std::cout << stopsVec[sus]->getCode() << " " << stopsVec[sus]->getName() << " using line: " << stopsVec[sus]->getLinePred()->getCode()<<std::endl;
         }
     }
 }
@@ -267,7 +269,7 @@ void InfoSTCP::menu() {
 
     int number = 50;
 
-    while (flag) {          //checks the input
+    while (flag) {//checks the input
         showMenu();
 
         std::string x;
@@ -275,7 +277,6 @@ void InfoSTCP::menu() {
         std::cin >> x;
 
         if (std::cin.fail() || std::cin.peek() != '\n' || x.size() != 1 || !isNumber(x)) {
-            std::system(CLEAR);
             std::cout << "Invalid input, please try again: " << std::endl;
 
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -292,7 +293,6 @@ void InfoSTCP::menu() {
             if (number == 1 || number == 2 || number == 0) {
                 flag = false;
             } else {
-                std::system(CLEAR);
                 std::cout << "Invalid input, please try again:" << std::endl;
             }
         }
@@ -300,8 +300,10 @@ void InfoSTCP::menu() {
             if (number == 0) {
                 return;
             } else if (number == 1) {
+                start();
                 flag = true;
             } else if (number == 2) {
+                settings();
                 flag = true;
             }
         }
@@ -323,4 +325,8 @@ void InfoSTCP::showStatusBar(double progress) {
         std::cout.flush();
 
     std::cout << std::endl;
+}
+
+void InfoSTCP::settings() {
+    setNewWalkDistance(0.1);
 }
