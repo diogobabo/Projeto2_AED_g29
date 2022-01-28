@@ -4,7 +4,18 @@
 
 #include "InfoSTCP.h"
 
-void InfoSTCP::readLines(std::string filename) {
+bool InfoSTCP::isNumber(const std::string &s)            //verifies if the string contains only numbers
+{
+    for(int x = 0; x<s.size();x++){
+
+        if(isdigit(s[x]) == false)
+            return false;
+
+    }
+    return true;
+}
+
+void InfoSTCP::readLines(const std::string& filename) {
     std::fstream lineFile;
     std::fstream lineSpec;
     lineFile.open(filename);
@@ -193,14 +204,21 @@ void InfoSTCP::reduceArtificialLineVec() {
 }
 
 void InfoSTCP::enlargeArtificialLineVec(double lastWalkingDistance) {
-    int o = 0,l = 0;
+    int l = 0;
+    double o = 0,p = 0,f = -1;
+
+    for(auto l : artificialLineVec) {
+        if(l->getDistance() <= maxWalkingDistance){
+            l->null = false;
+        }
+    }
+
     for(auto stops1 : stopsVec){
 
         if(o == 0){o = 1;continue;}
 
         for(auto stops2 : stopsVec){
             if(l== 0){l = 1;continue;}
-
             if(stops1 != stops2){
                 double distance = haversine(stops1,stops2);
                 if(lastWalkingDistance < distance && distance <= maxWalkingDistance){
@@ -218,7 +236,91 @@ void InfoSTCP::enlargeArtificialLineVec(double lastWalkingDistance) {
             }
 
         }
+
+        p = o / stopsVec.size();
+
+        if( p > f +0.16){
+            f = p;
+            showStatusBar(p);
+        }
+
+        o = o + 1;
     }
 }
 
+void InfoSTCP::showMenu() {
+    std::cout << " ____________________________________________________________________________________" <<  std::endl;
+    std::cout << "|                                                                                   |" <<  std::endl;
+    std::cout << "|                                                                                   |" <<  std::endl;
+    std::cout << "|                                                         __|__                     |" <<  std::endl;
+    std::cout << "|    *OPTIONS*                                     --------(_)--------              |" <<  std::endl;
+    std::cout << "|                                                    O  O       O  O                |" <<  std::endl;
+    std::cout << "|    0 -> EXIT                                                                      |" <<  std::endl;
+    std::cout << "|    1 -> SEARCH                                                                    |" <<  std::endl;
+    std::cout << "|    2 -> SETTINGS                                                                  |" <<  std::endl;
+    std::cout << "|                                                                                   |" <<  std::endl;
+    std::cout << " ------------------------------------------------------------------------------------" <<  std::endl;
+}
 
+void InfoSTCP::menu() {
+    bool flag = true;
+
+    int number = 50;
+
+    while (flag) {          //checks the input
+        showMenu();
+
+        std::string x;
+
+        std::cin >> x;
+
+        if (std::cin.fail() || std::cin.peek() != '\n' || x.size() != 1 || !isNumber(x)) {
+            std::system(CLEAR);
+            std::cout << "Invalid input, please try again: " << std::endl;
+
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.clear();
+
+            flag = true;
+
+        } else {
+
+            std::stringstream ss(x);
+
+            ss >> number;
+
+            if (number == 1 || number == 2 || number == 0) {
+                flag = false;
+            } else {
+                std::system(CLEAR);
+                std::cout << "Invalid input, please try again:" << std::endl;
+            }
+        }
+        if (flag == false) {
+            if (number == 0) {
+                return;
+            } else if (number == 1) {
+                flag = true;
+            } else if (number == 2) {
+                flag = true;
+            }
+        }
+    }
+}
+
+void InfoSTCP::showStatusBar(double progress) {
+
+        int barWidth = 70;
+
+        std::cout << "[";
+        int pos = barWidth * progress;
+        for (int i = 0; i < barWidth; ++i) {
+            if (i < pos) std::cout << "=";
+            else if (i == pos) std::cout << ">";
+            else std::cout << " ";
+        }
+        std::cout << "] " << int(progress * 100.0) << " %\r";
+        std::cout.flush();
+
+    std::cout << std::endl;
+}

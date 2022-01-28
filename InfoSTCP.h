@@ -5,6 +5,12 @@
 #ifndef PROJETO2_AED_INFOSTCP_H
 #define PROJETO2_AED_INFOSTCP_H
 
+#ifdef _WIN32
+#define CLEAR "cls"
+#else
+#define CLEAR "clear"
+#endif
+
 #include <string>
 #include <vector>
 #include "Line.h"
@@ -17,6 +23,7 @@
 
 class InfoSTCP {
 private:
+    static bool isNumber(const std::string &s);
     std::vector<Stop *> stopsVec;
     std::vector<Line *> lineVec;
     std::vector<Line *> artificialLineVec;
@@ -27,10 +34,13 @@ private:
     void functionTest();
     void reduceArtificialLineVec();
     void enlargeArtificialLineVec(double lastWalkingDistance);
+    void showMenu();
+    void menu();
+    void showStatusBar(double progress);
 public:
     InfoSTCP();
     void setNewWalkDistance(double newWalkingDistance);
-    void readLines(std::string filename);
+    void readLines(const std::string& filename);
     void start();
     void addStop(std::string code, std::string name, std::string zone, long lat, long lon);
     void addLine();
