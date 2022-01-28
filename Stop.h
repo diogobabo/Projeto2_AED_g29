@@ -34,8 +34,8 @@ public:
     std::string getZone();
     double getLatitude();
     double getLongitude();
-    bool operator<(const Stop *s1) const;
-    bool operator==(const Stop *s1) const;
+    bool operator<(const Stop &s1) const;
+    bool operator==(const Stop &s1) const;
     void setPred(int pred,Line* line);
     int getPred();
     Line* getLinePred();

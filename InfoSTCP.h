@@ -19,12 +19,17 @@ class InfoSTCP {
 private:
     std::vector<Stop *> stopsVec;
     std::vector<Line *> lineVec;
+    std::vector<Line *> artificialLineVec;
     static double haversine(Stop* stop1,Stop* stop2);
     std::map<std::string,int> stopMap;
     Graph graph;
+    double maxWalkingDistance;
     void functionTest();
+    void reduceArtificialLineVec();
+    void enlargeArtificialLineVec(double lastWalkingDistance);
 public:
     InfoSTCP();
+    void setNewWalkDistance(double newWalkingDistance);
     void readLines(std::string filename);
     void start();
     void addStop(std::string code, std::string name, std::string zone, long lat, long lon);

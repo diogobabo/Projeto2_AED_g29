@@ -21,6 +21,7 @@ public:
     enum TYPE{
         AUTOCARRO,
         ELETRICO,
+        WALKING,
         START
     };
     bool null;

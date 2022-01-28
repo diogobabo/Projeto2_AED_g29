@@ -100,16 +100,17 @@ void InfoSTCP::readLines(std::string filename) {
 }
 
 InfoSTCP::InfoSTCP() {
+    maxWalkingDistance = 0;
     GetDataSet getbst("../dataset/stops.csv");
 
     stopsVec = getbst.getStops();
     stopsVec.insert(stopsVec.begin(),new Stop(0,"","","",0,0));
-
     stopMap = getbst.getMap();
     Graph g(stopsVec,stopsVec.size(),false);
     this->graph = g;
 
     readLines("../dataset/lines.csv");
+    setNewWalkDistance(0.1);
 
 }
 double InfoSTCP::haversine(Stop* stop1,Stop* stop2)
@@ -163,6 +164,60 @@ void InfoSTCP::functionTest() {
     for(auto sus:lineVec){
         if(sus->getNight())sus->null=true;
         else if(sus->getType() != Line::AUTOCARRO)sus->null=true;
+    }
+}
+
+void InfoSTCP::setNewWalkDistance(double newWalkingDistance) {
+    if(newWalkingDistance < 0){
+        return;
+    }
+    else if(newWalkingDistance == maxWalkingDistance){
+        return;
+    }
+    else if(newWalkingDistance<maxWalkingDistance){
+        this->maxWalkingDistance = newWalkingDistance;
+        reduceArtificialLineVec();
+    }else{
+        double d = maxWalkingDistance;
+        this->maxWalkingDistance = newWalkingDistance;
+        enlargeArtificialLineVec(d);
+    }
+}
+
+void InfoSTCP::reduceArtificialLineVec() {
+    for(auto l : artificialLineVec){
+        if(l->getDistance() > maxWalkingDistance){
+            l->null = true;
+        }
+    }
+}
+
+void InfoSTCP::enlargeArtificialLineVec(double lastWalkingDistance) {
+    int o = 0,l = 0;
+    for(auto stops1 : stopsVec){
+
+        if(o == 0){o = 1;continue;}
+
+        for(auto stops2 : stopsVec){
+            if(l== 0){l = 1;continue;}
+
+            if(stops1 != stops2){
+                double distance = haversine(stops1,stops2);
+                if(lastWalkingDistance < distance && distance <= maxWalkingDistance){
+
+                    Line l1(stops1->getCode(),"Walk to: "+stops1->getName()+" Stop", stops1,false,distance,Line::WALKING);
+                    Line *l11 = new Line(l1);
+                    stops2->addOutgoingLine(l11);
+                    artificialLineVec.push_back(l11);
+
+                    Line l2(stops2->getCode(),"Walk to: "+stops2->getName()+" Stop", stops2,false,distance,Line::WALKING);
+                    Line *l21 = new Line(l2);
+                    stops1->addOutgoingLine(l21);
+                    artificialLineVec.push_back(l21);
+                }
+            }
+
+        }
     }
 }
 

@@ -56,16 +56,16 @@ double Stop::getLongitude() {
     return longitude;
 }
 
-bool Stop::operator<(const Stop *s1) const {
-    return this->number < s1->number;
+bool Stop::operator<(const Stop &s1) const {
+    return this->number < s1.number;
 }
 
 std::vector<Line *> &Stop::getAdj() {
     return adj;
 }
 
-bool Stop::operator==(const Stop *s1) const {
-    return this->number == s1->number;
+bool Stop::operator==(const Stop &s1) const {
+    return this->number == s1.number;
 }
 
 int Stop::getNum() {
