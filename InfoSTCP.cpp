@@ -119,7 +119,9 @@ InfoSTCP::InfoSTCP() {
     stopMap = getbst.getMap();
     Graph g(stopsVec,stopsVec.size(),false);
     this->graph = g;
-
+    bus = true;
+    eletric = false;
+    walking = false;
     readLines("../dataset/lines.csv");
 
 }
@@ -328,5 +330,114 @@ void InfoSTCP::showStatusBar(double progress) {
 }
 
 void InfoSTCP::settings() {
-    setNewWalkDistance(0.1);
+    int x;
+    std::cout << "1) Walking Distance" << std::endl;
+    std::cout << "2) Means of Transport" << std::endl;
+    std::cout << "3) Best path" << std::endl;
+    std::cout << "0) Exit" << std::endl;
+    cin >> x;
+    while (std::cin.fail() || std::cin.peek() != '\n' || x > 3 ) {
+        std::cout << "Invalid input, please try again: " << std::endl;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.clear();
+        cin >> x;
+    }
+    if(x == 1) {
+        walkingDistance();
+    }
+    else if(x == 2) {
+        meansTransport();
+        return;
+    }
+    else if(x == 3) {
+        return;
+    }
+    else if(x == 0) {
+        return;
+    }
+}
+
+void InfoSTCP::walkingDistance() {
+    while(true) {
+        int x;
+        std::string km;
+        std::string andar = walking ? "ON" : "OFF";
+        std::cout << "1) Walking -> " << andar << std::endl;
+        std::cout << "0) Exit" << std::endl;
+        cin >> x;
+        while (std::cin.fail() || std::cin.peek() != '\n' || x > 3) {
+            std::cout << "Invalid input, please try again: " << std::endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.clear();
+            cin >> x;
+        }
+        if(x == 0) {
+            return;
+        }
+        else if(x == 1) {
+            if(!walking) {
+
+                std::cout << "Set the distance you are willing to walk! (km)" << std::endl;
+                cin >> km;
+                while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(km)) {
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "Invalid input, please try again: " << std::endl;
+                    cin >> km;
+                }
+                double dis = std::stod(km);
+                setNewWalkDistance(dis);
+                walking = true;
+            }
+            else {
+                setNewWalkDistance(0.0);
+                walking = false;
+            }
+        }
+    }
+}
+
+bool InfoSTCP::isDouble(std::string num) {
+    bool isDD = true;
+    int counter = 0;
+    for(int i = 0; i < num.length(); i++) {
+        if(num[i] == '.') {
+            counter++;
+            continue;
+        }
+        if(isdigit(num[i]) == false) {
+            isDD = false;
+        }
+    }
+    if(counter <= 1 && isDD) {
+        return true;
+    }
+    return false;
+}
+
+void InfoSTCP::meansTransport() {
+    while(true) {
+        int x;
+        std::string autocarro = bus ? "ON" : "OFF";
+        std::string eletrico = eletric ? "ON" : "OFF";
+        std::cout << "1) Bus -> " << autocarro  << std::endl;
+        std::cout << "2) Eletric -> " << eletrico << std::endl;
+        std::cout << "0) Exit" << std::endl;
+        cin >> x;
+        while (std::cin.fail() || std::cin.peek() != '\n' || x > 3) {
+            std::cout << "Invalid input, please try again: " << std::endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.clear();
+            cin >> x;
+        }
+        if(x == 0) {
+            return;
+        }
+        if(x == 1) {
+            bus ? bus = false : bus = true;
+        }
+        else if(x == 2) {
+            eletric ? eletric = false : eletric = true;
+        }
+    }
 }

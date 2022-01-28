@@ -40,7 +40,6 @@ public:
     bool getNight();
     TYPE getType();
     double getDistance();
-
     double weight;
 };
 

@@ -33,6 +33,7 @@ private:
     void start();
     void showStatusBar(double progress);
     void settings();
+    bool bus,eletric,walking;
 public:
     InfoSTCP();
     void setNewWalkDistance(double newWalkingDistance);
@@ -40,7 +41,10 @@ public:
     void addStop(std::string code, std::string name, std::string zone, long lat, long lon);
     void addLine();
     void checkInput();
+    void walkingDistance();
     void menu();
+    bool isDouble(std::string num);
+    void meansTransport();
 };
 
 
