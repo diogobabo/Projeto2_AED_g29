@@ -126,7 +126,6 @@ InfoSTCP::InfoSTCP() {
     leastStops = true;
     leastDistance = false;
     cheapest = false;
-    leastBusChange = false;
     leastWalking = false;
     readLines("../dataset/lines.csv");
     applyMeans();
@@ -319,11 +318,9 @@ void InfoSTCP::printBestPath(Stop *s1, Stop *s2) {
     else if(cheapest){
         l = graph.dijkstra_cheap_path(stopMap.find(s1->getCode())->second,stopMap.find(s2->getCode())->second);
     }
-    else if(leastBusChange){
-
-    }
     else if(leastWalking){
-
+        leastWalkingLines();
+        l = graph.dijkstra_path(stopMap.find(s1->getCode())->second,stopMap.find(s2->getCode())->second);
     }
 
     if(l.empty()){
@@ -792,13 +789,11 @@ void InfoSTCP::bestPath() {
         std::string lStops = leastStops ? "ON" : "OFF";
         std::string lDistance = leastDistance ? "ON" : "OFF";
         std::string lPrice = cheapest ? "ON" : "OFF";
-        std::string lBusChange = leastBusChange ? "ON" : "OFF";
         std::string lWalking = leastWalking ? "ON" : "OFF";
         std::cout << "1) Least Stops -> " << lStops << std::endl;
         std::cout << "2) Least Distance -> " << lDistance << std::endl;
         std::cout << "3) Least Price -> " << lPrice << std::endl;
-        std::cout << "4) Least Bus Change -> " << lBusChange << std::endl;
-        std::cout << "5) Least Walking -> " << lWalking << std::endl;
+        std::cout << "4) Least Walking -> " << lWalking << std::endl;
         std::cout << "0) Exit" << std::endl;
 
         cin >> x;
@@ -812,7 +807,7 @@ void InfoSTCP::bestPath() {
             std::stringstream ss(x);
 
             ss >> number;
-            if (number == 1 || number == 2 || number == 0 || number == 3 || number == 4 || number == 5) {
+            if (number == 1 || number == 2 || number == 0 || number == 3 || number == 4) {
                 flag = false;
             }
             else {
@@ -827,36 +822,25 @@ void InfoSTCP::bestPath() {
                 leastStops = true;
                 leastDistance = false;
                 cheapest = false;
-                leastBusChange = false;
                 leastWalking = false;
                 flag = true;
             } else if (number == 2) {
                 leastDistance = true;
                 leastStops = false;
                 cheapest = false;
-                leastBusChange = false;
                 leastWalking = false;
                 flag = true;
             }else if(number == 3){
                 cheapest = true;
                 leastStops = false;
                 leastDistance = false;
-                leastBusChange = false;
                 leastWalking = false;
                 flag = true;
             }else if(number == 4) {
-                leastBusChange = true;
-                leastStops = false;
-                leastDistance = false;
-                cheapest = false;
-                leastWalking = false;
-                flag = true;
-            }else if(number == 5) {
                 leastWalking = true;
                 leastStops = false;
                 leastDistance = false;
                 cheapest = false;
-                leastBusChange = false;
                 flag = true;
             }
         }
@@ -869,5 +853,14 @@ void InfoSTCP::resetWeight() {
     }
     for(auto it = artificialLineVec.begin(); it != artificialLineVec.end(); it++) {
         (*it)->setWeight(0);
+    }
+}
+
+void InfoSTCP::leastWalkingLines() {
+    for(auto it = lineVec.begin(); it != lineVec.end(); it++) {
+        (*it)->setWeight(0.02);
+    }
+    for(auto it = artificialLineVec.begin(); it != artificialLineVec.end(); it++) {
+        (*it)->setWeight((*it)->getDistance());
     }
 }

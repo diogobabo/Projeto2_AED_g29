@@ -29,10 +29,8 @@ public:
     std::list<int> dijkstra_path(int a, int b);
     std::list<int> bfs_path(int a, int b);
     std::list<int> dijkstra_cheap_path(int a, int b);
-    std::list<int> dijkstra_bus_path(int a, int b);
     void dijkstra(int s);
     void dijkstra_Cheap(int s);
-    void dijkstra_bus(int s);
     void bfs(int v);
     void addNode(Stop *stop1);
 };

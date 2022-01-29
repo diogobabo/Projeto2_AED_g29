@@ -42,8 +42,9 @@ private:
     Stop* destinyMenu();
     void printBestPath(Stop *s1,Stop *s2);
     void bestPath();
+    void leastWalkingLines();
     bool bus,eletric,walking,noturno;
-    bool leastStops,leastDistance,leastWalking,cheapest,leastBusChange;
+    bool leastStops,leastDistance,leastWalking,cheapest;
 
 public:
     InfoSTCP();
