@@ -124,6 +124,7 @@ InfoSTCP::InfoSTCP() {
     walking = false;
     noturno = false;
     readLines("../dataset/lines.csv");
+    applyMeans();
 
 }
 double InfoSTCP::haversine(Stop* stop1,Stop* stop2)
@@ -380,6 +381,7 @@ void InfoSTCP::settings() {
                 meansTransport();
                 flag = true;
             }else if(number == 3){
+                bestPath();
                 flag = true;
             }
         }
@@ -656,7 +658,6 @@ Stop* InfoSTCP::originMenu() {
             }else if(number == 3){
                 flag = true;
                 Stop* s1 = searchByCoordinates();
-                return s1;
                 if(s1 == nullptr) {
                     std::cout << "Couldn't find the stop wanted, try again!" << std::endl;
                 }
@@ -666,6 +667,7 @@ Stop* InfoSTCP::originMenu() {
             }
         }
     }
+    return nullptr;
 }
 
 Stop* InfoSTCP::destinyMenu() {
@@ -731,7 +733,6 @@ Stop* InfoSTCP::destinyMenu() {
             }else if(number == 3){
                 flag = true;
                 Stop* s1 = searchByCoordinates();
-                return s1;
                 if(s1 == nullptr) {
                     std::cout << "Couldn't find the stop wanted, try again!" << std::endl;
                 }
@@ -741,6 +742,7 @@ Stop* InfoSTCP::destinyMenu() {
             }
         }
     }
+    return nullptr;
 }
 
 void InfoSTCP::lessStops() {
@@ -752,5 +754,54 @@ void InfoSTCP::lessStops() {
 void InfoSTCP::lessDistance() {
     for(auto it = lineVec.begin(); it != lineVec.end(); it++) {
         (*it)->setWeight((*it)->getDistance());
+    }
+}
+
+void InfoSTCP::bestPath() {
+    bool flag = true;
+
+    int number = 50;
+
+    while (flag) {
+        std::string x;
+
+        std::cout << "1) Walking Distance" << std::endl;
+        std::cout << "2) Means of Transport e Horario" << std::endl;
+        std::cout << "3) Best path" << std::endl;
+        std::cout << "0) Exit" << std::endl;
+
+        cin >> x;
+
+        if(std::cin.fail() || std::cin.peek() != '\n' || x.size() != 1 || !isNumber(x)) {
+            std::cout << "Invalid input, please try again: " << std::endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+            std::cin.clear();
+            flag = true;
+        }else {
+            std::stringstream ss(x);
+
+            ss >> number;
+            if (number == 1 || number == 2 || number == 0 || number == 3) {
+                flag = false;
+            }
+            else {
+                std::cout << "Invalid input, please try again:" << std::endl;
+                flag = true;
+            }
+        }
+        if (flag == false) {
+            if (number == 0) {
+                return;
+            } else if (number == 1) {
+                walkingDistance();
+                flag = true;
+            } else if (number == 2) {
+                meansTransport();
+                flag = true;
+            }else if(number == 3){
+                bestPath();
+                flag = true;
+            }
+        }
     }
 }

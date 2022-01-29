@@ -59,19 +59,21 @@ void Graph::dijkstra(int s) {
 }
 void Graph::bfs(int v) {
 // initialize all nodes as unvisited
-    for ( int v=1; v<=size; v++) nodes[v]->visited = false ;
+    for ( int v=1; v<size; v++) nodes[v]->visited = false ;
     std::queue<int > q; // queue of unvisited nodes
     q.push(v);
     nodes[v]->visited = true ;
+    nodes[v]->setPred(v,new Line(Line::START)) ;//
     while (!q.empty ()) { // while there are still unprocessed nodes
         int u = q.front ();
         q.pop (); // remove first element of q
-        cout << u << " "; // show node order
         for (auto e : nodes[u]->getAdj()) {
+            if(e->null)continue;
             int w = e->getDest()->getNum();
             if (! nodes[w]->visited) { // new node!
                 q.push(w);
                 nodes[w]->visited = true ;
+                nodes[w]->setPred(u,e);//
             }
         }
     }
@@ -79,8 +81,15 @@ void Graph::bfs(int v) {
 
 std::list<int> Graph::bfs_path(int a, int b) {
     bfs(a);
-
-    return std::list<int>();
+    list<int> path;
+    if (nodes[b]->visited == false) return path;
+    path.push_back(b);
+    int v = b;
+    while (v != a) {
+        v = nodes[v]->getPred();
+        path.push_front(v);
+    }
+    return path;
 }
 
 void Graph::addNode(Stop *stop1) {
