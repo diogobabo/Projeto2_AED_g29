@@ -150,21 +150,6 @@ double InfoSTCP::haversine(Stop* stop1,Stop* stop2)
     return rad * c;
 }
 
-void InfoSTCP::start() {
-    functionTest();
-    std::list<int> l = graph.dijkstra_path(stopMap.find("PDC")->second,stopMap.find("MAKR4")->second);
-
-    for(auto sus:l){
-        if(stopsVec[sus]->getLinePred()->type == Line::START)
-            std::cout << stopsVec[sus]->getCode() << " " << stopsVec[sus]->getName() << " Start" <<std::endl;
-        else if(stopsVec[sus]->getLinePred()->type == Line::WALKING)
-            std::cout << stopsVec[sus]->getCode() << " " << stopsVec[sus]->getName() << " " << stopsVec[sus]->getLinePred()->getName()<<std::endl;
-        else{
-                std::cout << stopsVec[sus]->getCode() << " " << stopsVec[sus]->getName() << " using line: " << stopsVec[sus]->getLinePred()->getCode()<<std::endl;
-        }
-    }
-}
-
 void InfoSTCP::addStop(std::string code, std::string name, std::string zone, long lat, long lon) {
     int number;
     number = stopMap.size() + 1;
@@ -177,12 +162,6 @@ void InfoSTCP::addStop(std::string code, std::string name, std::string zone, lon
 
 }
 
-void InfoSTCP::functionTest() {
-    for(auto sus:lineVec){
-        if(sus->getNight())sus->null=true;
-        else if(sus->getType() != Line::AUTOCARRO)sus->null=true;
-    }
-}
 
 void InfoSTCP::setNewWalkDistance(double newWalkingDistance) {
     if(newWalkingDistance < 0){
@@ -301,15 +280,45 @@ void InfoSTCP::menu() {
             if (number == 0) {
                 return;
             } else if (number == 1) {
-                originMenu();
-                destinyMenu();
                 flag = true;
+                Stop *s1,*s2;
+                s1 = originMenu();
+                if(s1 == nullptr){
+                    continue;
+                }
+                s2 = destinyMenu();
+                if(s2 == nullptr){
+                    continue;
+                }
+                printBestPath(s1,s2);
             } else if (number == 2) {
                 settings();
                 flag = true;
             }
         }
     }
+}
+
+void InfoSTCP::printBestPath(Stop *s1, Stop *s2) {
+
+    std::list<int> l = graph.dijkstra_path(stopMap.find(s1->getCode())->second,stopMap.find(s2->getCode())->second);
+
+    if(l.empty()){
+        std::cout << " There is no viable Path with the current settings" <<std::endl;
+    }
+
+    for(auto sus:l){
+        if(stopsVec[sus]->getLinePred()->type == Line::START)
+            std::cout << stopsVec[sus]->getCode() << " " << stopsVec[sus]->getName() << " Start" <<std::endl;
+        else if(stopsVec[sus]->getLinePred()->type == Line::WALKING)
+            std::cout << "From here: " <<stopsVec[sus]->getLinePred()->getCode() << " Walk " << stopsVec[sus]->getLinePred()->getDistance()<< " km to " << stopsVec[sus]->getName()+" "+ stopsVec[sus]->getCode()  << " " <<std::endl;
+        else{
+            std::cout << "Get here - " <<stopsVec[sus]->getCode() << " also known as -" << stopsVec[sus]->getName() << " By using line - " << stopsVec[sus]->getLinePred()->getCode()<<std::endl;
+        }
+    }
+
+
+
 }
 
 void InfoSTCP::showStatusBar(double progress) {

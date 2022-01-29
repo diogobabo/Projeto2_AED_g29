@@ -29,19 +29,17 @@ private:
     std::map<std::string,int> stopMap;
     Graph graph;
     double maxWalkingDistance;
-    void functionTest();
     void reduceArtificialLineVec();
     void enlargeArtificialLineVec(double lastWalkingDistance);
     void showMenu();
-    void start();
     void showStatusBar(double progress);
     void settings();
     void applyMeans();
     void lessStops();
     void lessDistance();
-    bool inArtificialLineVec(Stop *s1,Stop *s2);
     Stop* originMenu();
     Stop* destinyMenu();
+    void printBestPath(Stop *s1,Stop *s2);
     bool bus,eletric,walking,noturno;
 public:
     InfoSTCP();
