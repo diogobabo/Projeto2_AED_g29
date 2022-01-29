@@ -61,3 +61,7 @@ double Line::getDistance() {
 Line::Line(Line::TYPE type) {
     this->type = type;
 }
+
+void Line::setWeight(double weight) {
+    this->weight = weight;
+}

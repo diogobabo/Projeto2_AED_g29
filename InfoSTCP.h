@@ -18,9 +18,9 @@
 
 class InfoSTCP {
 private:
-    void searchByName();
-    void searchByCode();
-    void searchByCoordenades(double lat,double lonj);
+    list <Stop*> searchByName(std::string name);
+    Stop* searchByCode(std::string code);
+    Stop* searchByCoordinates(double lat,double lonj);
     static bool isNumber(const std::string &s);
     std::vector<Stop *> stopsVec;
     std::vector<Line *> lineVec;
@@ -37,6 +37,8 @@ private:
     void showStatusBar(double progress);
     void settings();
     void applyMeans();
+    void lessStops();
+    void lessDistance();
     bool inArtificialLineVec(Stop *s1,Stop *s2);
     bool bus,eletric,walking,noturno;
 public:
@@ -50,6 +52,8 @@ public:
     void menu();
     bool isDouble(std::string num);
     void meansTransport();
+    void originMenu();
+    void destinyMenu();
 };
 
 
