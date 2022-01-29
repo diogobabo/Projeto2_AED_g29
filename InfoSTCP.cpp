@@ -123,6 +123,11 @@ InfoSTCP::InfoSTCP() {
     eletric = true;
     walking = false;
     noturno = false;
+    leastStops = false;
+    leastDistance = false;
+    cheapest = false;
+    leastBusChange = false;
+    leastWalking = false;
     readLines("../dataset/lines.csv");
     applyMeans();
 
@@ -764,10 +769,16 @@ void InfoSTCP::bestPath() {
 
     while (flag) {
         std::string x;
-
-        std::cout << "1) Walking Distance" << std::endl;
-        std::cout << "2) Means of Transport e Horario" << std::endl;
-        std::cout << "3) Best path" << std::endl;
+        std::string lStops = leastStops ? "ON" : "OFF";
+        std::string lDistance = leastDistance ? "ON" : "OFF";
+        std::string lPrice = cheapest ? "ON" : "OFF";
+        std::string lBusChange = leastBusChange ? "ON" : "OFF";
+        std::string lWalking = leastWalking ? "ON" : "OFF";
+        std::cout << "1) Least Stops -> " << lStops << std::endl;
+        std::cout << "2) Least Distance -> " << lDistance << std::endl;
+        std::cout << "3) Least Price -> " << lPrice << std::endl;
+        std::cout << "4) Least Bus Change -> " << lBusChange << std::endl;
+        std::cout << "5) Least Walking -> " << lWalking << std::endl;
         std::cout << "0) Exit" << std::endl;
 
         cin >> x;
@@ -781,7 +792,7 @@ void InfoSTCP::bestPath() {
             std::stringstream ss(x);
 
             ss >> number;
-            if (number == 1 || number == 2 || number == 0 || number == 3) {
+            if (number == 1 || number == 2 || number == 0 || number == 3 || number == 4 || number == 5) {
                 flag = false;
             }
             else {
@@ -793,13 +804,39 @@ void InfoSTCP::bestPath() {
             if (number == 0) {
                 return;
             } else if (number == 1) {
-                walkingDistance();
+                leastStops ? leastStops = false : leastStops = true;
+                leastDistance = false;
+                cheapest = false;
+                leastBusChange = false;
+                leastWalking = false;
                 flag = true;
             } else if (number == 2) {
-                meansTransport();
+                leastDistance ? leastDistance = false : leastDistance = true;
+                leastStops = false;
+                cheapest = false;
+                leastBusChange = false;
+                leastWalking = false;
                 flag = true;
             }else if(number == 3){
-                bestPath();
+                cheapest ? cheapest = false : cheapest = true;
+                leastStops = false;
+                leastDistance = false;
+                leastBusChange = false;
+                leastWalking = false;
+                flag = true;
+            }else if(number == 4) {
+                leastBusChange ? leastBusChange = false : leastBusChange = true;
+                leastStops = false;
+                leastDistance = false;
+                cheapest = false;
+                leastWalking = false;
+                flag = true;
+            }else if(number == 5) {
+                leastWalking ? leastWalking = false : leastWalking = true;
+                leastStops = false;
+                leastDistance = false;
+                cheapest = false;
+                leastBusChange = false;
                 flag = true;
             }
         }
