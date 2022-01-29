@@ -1,7 +1,3 @@
-//
-// Created by Diogo Babo on 27/01/2022.
-//
-
 #ifndef PROJETO2_AED_MINHEAP_H
 #define PROJETO2_AED_MINHEAP_H
 
