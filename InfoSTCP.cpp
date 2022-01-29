@@ -531,7 +531,10 @@ void InfoSTCP::applyMeans() {
     }
 }
 
-list <Stop*> InfoSTCP::searchByName(std::string name) {
+list <Stop*> InfoSTCP::searchByName() {
+    std::string name;
+    std::cout << "Type the Name Of The Stop!" << std::endl;
+    cin >> name;
     list <Stop*> temp;
     for(auto it = stopsVec.begin(); it != stopsVec.end(); it++) {
         if((*it)->getName() == name) {
@@ -541,7 +544,10 @@ list <Stop*> InfoSTCP::searchByName(std::string name) {
     return temp;
 }
 
-Stop* InfoSTCP::searchByCode(std::string code) {
+Stop* InfoSTCP::searchByCode() {
+    std::string code;
+    std::cout << "Type the Code Of The Stop!" << std::endl;
+    cin >> code;
     auto it = stopMap.find(code);
     if(it != stopMap.end()) {
         return stopsVec[it->second];
@@ -549,9 +555,28 @@ Stop* InfoSTCP::searchByCode(std::string code) {
     return nullptr;
 }
 
-Stop* InfoSTCP::searchByCoordinates(double lat, double lonj) {
+Stop* InfoSTCP::searchByCoordinates() {
+    std::string lon,lat;
+    std::cout << "Type the Latitude Of The Stop!" << std::endl;
+    cin >> lat;
+    while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lat)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> lat;
+    }
+    double latitude = std::stod(lat);
+    std::cout << "Type the Longitude Of The Stop!" << std::endl;
+    cin >> lon;
+    while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lon)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> lon;
+    }
+    double longitude = std::stod(lon);
     for(auto it = stopsVec.begin(); it != stopsVec.end(); it++) {
-        if((*it)->getLatitude() == lat && (*it)->getLongitude() == lonj) {
+        if((*it)->getLatitude() == latitude && (*it)->getLongitude() == longitude) {
             return *it;
         }
     }
@@ -596,151 +621,115 @@ Stop* InfoSTCP::originMenu() {
             if (number == 0) {
                 return nullptr;
             } else if (number == 1) {
-                walkingDistance();
                 flag = true;
+                Stop* s1 = searchByCode();
+                if(s1 == nullptr) {
+                    std::cout << "Couldn't find the stop wanted, try again!" << std::endl;
+                }
+                else {
+                    return s1;
+                }
             } else if (number == 2) {
-                meansTransport();
+                list <Stop*> temp = searchByName();
+                if(temp.size() == 1) {
+                    return temp.front();
+                }
+                else if(temp.size() == 0) {
+                    std::cout << "Couldn't find the stop wanted, try again!" << std::endl;
+                }
+                else {
+                    cout << "Code : Latitude : Longitude" << std::endl;
+                    for(auto x : temp) {
+                        cout << x->getCode() << " : " << x->getLatitude() << " : " << x->getLongitude() << std::endl;
+                    }
+                }
                 flag = true;
             }else if(number == 3){
                 flag = true;
+                Stop* s1 = searchByCoordinates();
+                return s1;
+                if(s1 == nullptr) {
+                    std::cout << "Couldn't find the stop wanted, try again!" << std::endl;
+                }
+                else {
+                    return s1;
+                }
             }
-        }
-    }
-    while(true) {
-        int x;
-        std::cout << "How would you rather give the info of Origin Stop:" <<  std::endl;
-        std::cout << "1) By Code" << std::endl;
-        std::cout << "2) By Name" << std::endl;
-        std::cout << "3) By Coordinates" << std::endl;
-        std::cout << "0) Exit" << std::endl;
-        cin >> x;
-        while (std::cin.fail() || std::cin.peek() != '\n' || x > 3) {
-            std::cout << "Invalid input, please try again: " << std::endl;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cin.clear();
-            cin >> x;
-        }
-        if(x == 1) {
-            std::string code;
-            std::cout << "Type the Code Of The Stop!" << std::endl;
-            cin >> code;
-            Stop* stop1 = searchByCode(code);
-            if(stop1 == nullptr) {
-                std::cout << "Couldn't find the Stop" << std::endl;
-                continue;
-            }
-            return nullptr;
-        }
-        if(x == 2) {
-            std::string name;
-            std::cout << "Type the Name Of The Stop!" << std::endl;
-            cin >> name;
-            list <Stop *> lista = searchByName(name);
-            std::cout << "(Code : Latitude : Longitude)" << std::endl;
-            for(auto x : lista) {
-                cout << x->getCode() << " : " << x->getLatitude() << " : " << x->getLongitude() << std::endl;
-            }
-            return nullptr;
-        }
-        else if(x == 3) {
-            std::string lon,lat;
-            std::cout << "Type the Latitude Of The Stop!" << std::endl;
-            cin >> lat;
-            while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lat)) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Invalid input, please try again: " << std::endl;
-                cin >> lat;
-            }
-            double latitude = std::stod(lat);
-            std::cout << "Type the Longitude Of The Stop!" << std::endl;
-            cin >> lon;
-            while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lon)) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Invalid input, please try again: " << std::endl;
-                cin >> lon;
-            }
-            double longitude = std::stod(lon);
-            Stop* stop1 = searchByCoordinates(latitude,longitude);
-            if(stop1 == nullptr) {
-                std::cout << "Couldn't find the Stop" << std::endl;
-                continue;
-            }
-            return nullptr;
-
-        }else if(x == 0) {
-            return nullptr;
         }
     }
 }
 
 Stop* InfoSTCP::destinyMenu() {
-    while(true) {
-        int x;
+    bool flag = true;
+
+    int number = 50;
+
+    while (flag) {
+        std::string x;
+
         std::cout << "How would you rather give the info of Destiny Stop:" <<  std::endl;
         std::cout << "1) By Code" << std::endl;
         std::cout << "2) By Name" << std::endl;
         std::cout << "3) By Coordinates" << std::endl;
         std::cout << "0) Exit" << std::endl;
-        cin >> x;
-        while (std::cin.fail() || std::cin.peek() != '\n' || x > 3) {
-            std::cout << "Invalid input, please try again: " << std::endl;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cin.clear();
-            cin >> x;
-        }
-        if(x == 1) {
-            std::string code;
-            std::cout << "Type the Code Of The Stop!" << std::endl;
-            cin >> code;
-            Stop* stop1 = searchByCode(code);
-            if(stop1 == nullptr) {
-                std::cout << "Couldn't find the Stop" << std::endl;
-                continue;
-            }
-            return nullptr;
-        }
-        if(x == 2) {
-            std::string name;
-            std::cout << "Type the Name Of The Stop!" << std::endl;
-            cin >> name;
-            list <Stop *> lista = searchByName(name);
-            std::cout << "(Code : Latitude : Longitude)" << std::endl;
-            for(auto x : lista) {
-                cout << x->getCode() << " : " << x->getLatitude() << " : " << x->getLongitude() << std::endl;
-            }
-            return nullptr;
-        }
-        else if(x == 3) {
-            std::string lon,lat;
-            std::cout << "Type the Latitude Of The Stop!" << std::endl;
-            cin >> lat;
-            while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lat)) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Invalid input, please try again: " << std::endl;
-                cin >> lat;
-            }
-            double latitude = std::stod(lat);
-            std::cout << "Type the Longitude Of The Stop!" << std::endl;
-            cin >> lon;
-            while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lon)) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Invalid input, please try again: " << std::endl;
-                cin >> lon;
-            }
-            double longitude = std::stod(lon);
-            Stop* stop1 = searchByCoordinates(latitude,longitude);
-            if(stop1 == nullptr) {
-                std::cout << "Couldn't find the Stop" << std::endl;
-                continue;
-            }
-            return nullptr;
 
-        }else if(x == 0) {
-            return nullptr;
+        cin >> x;
+
+        if(std::cin.fail() || std::cin.peek() != '\n' || x.size() != 1 || !isNumber(x)) {
+            std::cout << "Invalid input, please try again: " << std::endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+            std::cin.clear();
+            flag = true;
+        }else {
+            std::stringstream ss(x);
+
+            ss >> number;
+            if (number == 1 || number == 2 || number == 0 || number == 3) {
+                flag = false;
+            }
+            else {
+                std::cout << "Invalid input, please try again:" << std::endl;
+                flag = true;
+            }
+        }
+        if (flag == false) {
+            if (number == 0) {
+                return nullptr;
+            } else if (number == 1) {
+                flag = true;
+                Stop* s1 = searchByCode();
+                if(s1 == nullptr) {
+                    std::cout << "Couldn't find the stop wanted, try again!" << std::endl;
+                }
+                else {
+                    return s1;
+                }
+            } else if (number == 2) {
+                list <Stop*> temp = searchByName();
+                if(temp.size() == 1) {
+                    return temp.front();
+                }
+                else if(temp.size() == 0) {
+                    std::cout << "Couldn't find the stop wanted, try again!" << std::endl;
+                }
+                else {
+                    cout << "Code : Latitude : Longitude" << std::endl;
+                    for(auto x : temp) {
+                        cout << x->getCode() << " : " << x->getLatitude() << " : " << x->getLongitude() << std::endl;
+                    }
+                }
+                flag = true;
+            }else if(number == 3){
+                flag = true;
+                Stop* s1 = searchByCoordinates();
+                return s1;
+                if(s1 == nullptr) {
+                    std::cout << "Couldn't find the stop wanted, try again!" << std::endl;
+                }
+                else {
+                    return s1;
+                }
+            }
         }
     }
 }
