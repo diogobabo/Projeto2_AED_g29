@@ -136,12 +136,33 @@ public:
     /**
     * Constructor of the class
     **/
-
     InfoSTCP();
+
+    /**
+       * sets the new walking distance
+       * @param newWalkingDistance
+    **/
+
     void setNewWalkDistance(double newWalkingDistance);
+
+    /**
+       * reads all the files related to lines
+       * @param filename
+    **/
     void readLines(const std::string& filename);
+
+    /**
+       * adds a stop
+       * @param code
+       * @param name
+       * @param zone
+       * @param lat
+       * @param lon
+    **/
     void addStop(std::string code, std::string name, std::string zone, long lat, long lon);
+
     void addLine();
+
     void checkInput();
 
     /**
