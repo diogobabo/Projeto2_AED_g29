@@ -18,6 +18,9 @@
 
 class InfoSTCP {
 private:
+    void searchByName();
+    void searchByCode();
+    void searchByCoordenades(double lat,double lonj);
     static bool isNumber(const std::string &s);
     std::vector<Stop *> stopsVec;
     std::vector<Line *> lineVec;

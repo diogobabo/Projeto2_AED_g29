@@ -173,6 +173,7 @@ void InfoSTCP::addStop(std::string code, std::string name, std::string zone, lon
     pair<std::string,int> stopPair(code,number);
     stopMap.insert(stopPair);
     stopsVec.push_back(stop);
+    graph.addNode(stop);
 
 }
 
@@ -467,4 +468,16 @@ void InfoSTCP::applyMeans() {
             l->null = true;
         }
     }
+}
+
+void InfoSTCP::searchByName() {
+
+}
+
+void InfoSTCP::searchByCode() {
+
+}
+
+void InfoSTCP::searchByCoordenades(double lat, double lonj) {
+
 }

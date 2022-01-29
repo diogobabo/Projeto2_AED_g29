@@ -8,7 +8,7 @@ Graph::Graph(std::vector<Stop *> &vec, int size, bool dir):size(size),directed(d
     this->nodes = vec;
 }
 
-// Add edge from source to destination with a certain weight
+// Add edge from source to destination
 
 void Graph::addEdge(int src,Line *line) {
     if (line->getDest()->getNum() <1 || line->getDest()->getNum() >size) return;
@@ -84,7 +84,8 @@ std::list<int> Graph::bfs_path(int a, int b) {
 }
 
 void Graph::addNode(Stop *stop1) {
-
+    nodes.push_back(stop1);
+    size = size +1;
 }
 
 
