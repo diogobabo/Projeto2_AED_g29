@@ -40,7 +40,7 @@ public:
     int getPred();
     Line* getLinePred();
     bool visited;
-    int dist;
+    double dist;
 
 };
 

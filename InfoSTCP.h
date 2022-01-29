@@ -30,6 +30,7 @@ private:
     Graph graph;
     double maxWalkingDistance;
     void reduceArtificialLineVec();
+    void resetWeight();
     void enlargeArtificialLineVec(double lastWalkingDistance);
     void showMenu();
     void showStatusBar(double progress);

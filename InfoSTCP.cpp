@@ -123,7 +123,7 @@ InfoSTCP::InfoSTCP() {
     eletric = true;
     walking = false;
     noturno = false;
-    leastStops = false;
+    leastStops = true;
     leastDistance = false;
     cheapest = false;
     leastBusChange = false;
@@ -306,22 +306,23 @@ void InfoSTCP::menu() {
 }
 
 void InfoSTCP::printBestPath(Stop *s1, Stop *s2) {
-
+    resetWeight();
     std::list<int> l;
 
-    if(leatsStops){
+    if(leastStops){
         l = graph.bfs_path(stopMap.find(s1->getCode())->second,stopMap.find(s2->getCode())->second);
     }
     else if(leastDistance){
+        lessDistance();
         l = graph.dijkstra_path(stopMap.find(s1->getCode())->second,stopMap.find(s2->getCode())->second);
     }
     else if(cheapest){
         l = graph.dijkstra_cheap_path(stopMap.find(s1->getCode())->second,stopMap.find(s2->getCode())->second);
     }
-    else if(leastBuschange){
+    else if(leastBusChange){
 
     }
-    else if(def){
+    else if(leastWalking){
 
     }
 
@@ -776,6 +777,9 @@ void InfoSTCP::lessDistance() {
     for(auto it = lineVec.begin(); it != lineVec.end(); it++) {
         (*it)->setWeight((*it)->getDistance());
     }
+    for(auto it = artificialLineVec.begin(); it != artificialLineVec.end(); it++) {
+        (*it)->setWeight((*it)->getDistance());
+    }
 }
 
 void InfoSTCP::bestPath() {
@@ -820,35 +824,35 @@ void InfoSTCP::bestPath() {
             if (number == 0) {
                 return;
             } else if (number == 1) {
-                leastStops ? leastStops = false : leastStops = true;
+                leastStops = true;
                 leastDistance = false;
                 cheapest = false;
                 leastBusChange = false;
                 leastWalking = false;
                 flag = true;
             } else if (number == 2) {
-                leastDistance ? leastDistance = false : leastDistance = true;
+                leastDistance = true;
                 leastStops = false;
                 cheapest = false;
                 leastBusChange = false;
                 leastWalking = false;
                 flag = true;
             }else if(number == 3){
-                cheapest ? cheapest = false : cheapest = true;
+                cheapest = true;
                 leastStops = false;
                 leastDistance = false;
                 leastBusChange = false;
                 leastWalking = false;
                 flag = true;
             }else if(number == 4) {
-                leastBusChange ? leastBusChange = false : leastBusChange = true;
+                leastBusChange = true;
                 leastStops = false;
                 leastDistance = false;
                 cheapest = false;
                 leastWalking = false;
                 flag = true;
             }else if(number == 5) {
-                leastWalking ? leastWalking = false : leastWalking = true;
+                leastWalking = true;
                 leastStops = false;
                 leastDistance = false;
                 cheapest = false;
@@ -856,5 +860,14 @@ void InfoSTCP::bestPath() {
                 flag = true;
             }
         }
+    }
+}
+
+void InfoSTCP::resetWeight() {
+    for(auto it = lineVec.begin(); it != lineVec.end(); it++) {
+        (*it)->setWeight(0);
+    }
+    for(auto it = artificialLineVec.begin(); it != artificialLineVec.end(); it++) {
+        (*it)->setWeight(0);
     }
 }
