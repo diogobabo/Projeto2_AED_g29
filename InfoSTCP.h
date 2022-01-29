@@ -127,11 +127,11 @@ private:
     /**
         * shows the menu of bestpath settings
      **/
+  
     void bestPath();
-
+    void leastWalkingLines();
     bool bus,eletric,walking,noturno;
-
-    bool leastStops,leastDistance,leastWalking,cheapest,leastBusChange;
+    bool leastStops,leastDistance,leastWalking,cheapest;
 
 public:
     /**

@@ -46,28 +46,23 @@ public:
     std::list<int> dijkstra_path(int a, int b);
     std::list<int> bfs_path(int a, int b);
     std::list<int> dijkstra_cheap_path(int a, int b);
-    std::list<int> dijkstra_bus_path(int a, int b);
 
     /**
     * dijkstra
      * @TimeComplexity: O(N_LINES * LOG(N_NODES))
      * @param s : starting node
     **/
+
     void dijkstra(int s);
 
     /**
-   * dijkstra
+   * dijkstra_Cheap
     * @TimeComplexity: O(N_LINES * LOG(N_NODES))
     * @param s : starting node
    **/
     void dijkstra_Cheap(int s);
 
-    /**
-   * dijkstra
-    * @TimeComplexity: O(N_LINES * LOG(N_NODES))
-    * @param s : starting node
-   **/
-    void dijkstra_bus(int s);
+
 
     /**
    * bfs
