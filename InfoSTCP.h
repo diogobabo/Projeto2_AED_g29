@@ -42,7 +42,8 @@ private:
     void printBestPath(Stop *s1,Stop *s2);
     void bestPath();
     bool bus,eletric,walking,noturno;
-    bool leatsStops,leastDistance,cheapest,leastBuschange,def;
+    bool leastStops,leastDistance,leastWalking,cheapest,leastBusChange;
+
 public:
     InfoSTCP();
     void setNewWalkDistance(double newWalkingDistance);
