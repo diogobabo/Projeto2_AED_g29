@@ -120,8 +120,9 @@ InfoSTCP::InfoSTCP() {
     Graph g(stopsVec,stopsVec.size(),false);
     this->graph = g;
     bus = true;
-    eletric = false;
+    eletric = true;
     walking = false;
+    noturno = false;
     readLines("../dataset/lines.csv");
 
 }
@@ -212,7 +213,7 @@ void InfoSTCP::enlargeArtificialLineVec(double lastWalkingDistance) {
     double o = 0,p = 0,f = -1;
 
     for(auto l : artificialLineVec) {
-        if(l->getDistance() <= maxWalkingDistance){
+        if(l->getDistance() <= maxWalkingDistance && l->getType() == Line::WALKING){
             l->null = false;
         }
     }
@@ -223,16 +224,17 @@ void InfoSTCP::enlargeArtificialLineVec(double lastWalkingDistance) {
 
         for(auto stops2 : stopsVec){
             if(l== 0){l = 1;continue;}
+
+
             if(stops1 != stops2){
                 double distance = haversine(stops1,stops2);
                 if(lastWalkingDistance < distance && distance <= maxWalkingDistance){
-
-                    Line l1(stops1->getCode(),"Walk to: "+stops1->getName()+" Stop", stops1,false,distance,Line::WALKING);
+                    Line l1(stops2->getCode(),"Walk to: "+stops1->getName()+" Stop", stops1,false,distance,Line::WALKING);
                     Line *l11 = new Line(l1);
                     stops2->addOutgoingLine(l11);
                     artificialLineVec.push_back(l11);
 
-                    Line l2(stops2->getCode(),"Walk to: "+stops2->getName()+" Stop", stops2,false,distance,Line::WALKING);
+                    Line l2(stops1->getCode(),"Walk to: "+stops2->getName()+" Stop", stops2,false,distance,Line::WALKING);
                     Line *l21 = new Line(l2);
                     stops1->addOutgoingLine(l21);
                     artificialLineVec.push_back(l21);
@@ -242,12 +244,7 @@ void InfoSTCP::enlargeArtificialLineVec(double lastWalkingDistance) {
         }
 
         p = o / stopsVec.size();
-
-        if( p > f +0.16){
-            f = p;
-            showStatusBar(p);
-        }
-
+        if( p > f +0.16){f = p;showStatusBar(p);}
         o = o + 1;
     }
 }
@@ -332,7 +329,7 @@ void InfoSTCP::showStatusBar(double progress) {
 void InfoSTCP::settings() {
     int x;
     std::cout << "1) Walking Distance" << std::endl;
-    std::cout << "2) Means of Transport" << std::endl;
+    std::cout << "2) Means of Transport e Horario" << std::endl;
     std::cout << "3) Best path" << std::endl;
     std::cout << "0) Exit" << std::endl;
     cin >> x;
@@ -361,7 +358,7 @@ void InfoSTCP::walkingDistance() {
     while(true) {
         int x;
         std::string km;
-        std::string andar = walking ? "ON" : "OFF";
+        std::string andar = walking ? "ON AND SET TO: " + to_string(maxWalkingDistance) + " KM" : "OFF";
         std::cout << "1) Walking -> " << andar << std::endl;
         std::cout << "0) Exit" << std::endl;
         cin >> x;
@@ -375,7 +372,7 @@ void InfoSTCP::walkingDistance() {
             return;
         }
         else if(x == 1) {
-            if(!walking) {
+
 
                 std::cout << "Set the distance you are willing to walk! (km)" << std::endl;
                 cin >> km;
@@ -387,12 +384,12 @@ void InfoSTCP::walkingDistance() {
                 }
                 double dis = std::stod(km);
                 setNewWalkDistance(dis);
-                walking = true;
-            }
-            else {
-                setNewWalkDistance(0.0);
-                walking = false;
-            }
+                if(dis == 0.0){
+                    walking = false;
+                }
+                else{
+                    walking = true;
+                }
         }
     }
 }
@@ -420,8 +417,10 @@ void InfoSTCP::meansTransport() {
         int x;
         std::string autocarro = bus ? "ON" : "OFF";
         std::string eletrico = eletric ? "ON" : "OFF";
+        std::string n = noturno ? "ON" : "OFF";
         std::cout << "1) Bus -> " << autocarro  << std::endl;
         std::cout << "2) Eletric -> " << eletrico << std::endl;
+        std::cout << "3) Periodo Noturno -> " << n << std::endl;
         std::cout << "0) Exit" << std::endl;
         cin >> x;
         while (std::cin.fail() || std::cin.peek() != '\n' || x > 3) {
@@ -431,6 +430,7 @@ void InfoSTCP::meansTransport() {
             cin >> x;
         }
         if(x == 0) {
+            applyMeans();
             return;
         }
         if(x == 1) {
@@ -438,6 +438,33 @@ void InfoSTCP::meansTransport() {
         }
         else if(x == 2) {
             eletric ? eletric = false : eletric = true;
+        }else if(x == 3) {
+            noturno ? noturno = false : noturno = true;
+        }
+    }
+}
+
+void InfoSTCP::applyMeans() {
+    for(auto l : lineVec){
+        if(l->getType() == Line::AUTOCARRO){
+            if(this->bus){
+                l->null = false;
+            }else{
+                l->null = true;
+            }
+        }
+        else if(l->getType() == Line::ELETRICO){
+            if(this->eletric){
+                l->null = false;
+            }else{
+                l->null = true;
+            }
+        }
+        if(l->getNight() && !noturno){
+            l->null = true;
+        }
+        else if(!l->getNight() && noturno){
+            l->null = true;
         }
     }
 }

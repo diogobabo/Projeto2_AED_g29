@@ -33,7 +33,9 @@ private:
     void start();
     void showStatusBar(double progress);
     void settings();
-    bool bus,eletric,walking;
+    void applyMeans();
+    bool inArtificialLineVec(Stop *s1,Stop *s2);
+    bool bus,eletric,walking,noturno;
 public:
     InfoSTCP();
     void setNewWalkDistance(double newWalkingDistance);
