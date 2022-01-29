@@ -330,51 +330,89 @@ void InfoSTCP::showStatusBar(double progress) {
 }
 
 void InfoSTCP::settings() {
-    int x;
-    std::cout << "1) Walking Distance" << std::endl;
-    std::cout << "2) Means of Transport e Horario" << std::endl;
-    std::cout << "3) Best path" << std::endl;
-    std::cout << "0) Exit" << std::endl;
-    cin >> x;
-    while (std::cin.fail() || std::cin.peek() != '\n' || x > 3 ) {
-        std::cout << "Invalid input, please try again: " << std::endl;
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cin.clear();
+    bool flag = true;
+
+    int number = 50;
+
+    while (flag) {
+        std::string x;
+
+        std::cout << "1) Walking Distance" << std::endl;
+        std::cout << "2) Means of Transport e Horario" << std::endl;
+        std::cout << "3) Best path" << std::endl;
+        std::cout << "0) Exit" << std::endl;
+
         cin >> x;
-    }
-    if(x == 1) {
-        walkingDistance();
-    }
-    else if(x == 2) {
-        meansTransport();
-        return;
-    }
-    else if(x == 3) {
-        return;
-    }
-    else if(x == 0) {
-        return;
+
+        if(std::cin.fail() || std::cin.peek() != '\n' || x.size() != 1 || !isNumber(x)) {
+            std::cout << "Invalid input, please try again: " << std::endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+            std::cin.clear();
+            flag = true;
+        }else {
+            std::stringstream ss(x);
+
+            ss >> number;
+            if (number == 1 || number == 2 || number == 0 || number == 3) {
+                flag = false;
+            }
+            else {
+                std::cout << "Invalid input, please try again:" << std::endl;
+                flag = true;
+            }
+        }
+        if (flag == false) {
+            if (number == 0) {
+                return;
+            } else if (number == 1) {
+                walkingDistance();
+                flag = true;
+            } else if (number == 2) {
+                meansTransport();
+                flag = true;
+            }else if(number == 3){
+                flag = true;
+            }
+        }
     }
 }
 
 void InfoSTCP::walkingDistance() {
-    while(true) {
-        int x;
-        std::string km;
+    bool flag = true;
+
+    int number = 50;
+
+    while (flag) {
+        std::string x;
+
         std::string andar = walking ? "ON AND SET TO: " + to_string(maxWalkingDistance) + " KM" : "OFF";
         std::cout << "1) Walking -> " << andar << std::endl;
         std::cout << "0) Exit" << std::endl;
+
         cin >> x;
-        while (std::cin.fail() || std::cin.peek() != '\n' || x > 3) {
+
+        if(std::cin.fail() || std::cin.peek() != '\n' || x.size() != 1 || !isNumber(x)) {
             std::cout << "Invalid input, please try again: " << std::endl;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
             std::cin.clear();
-            cin >> x;
+            flag = true;
+        }else {
+            std::stringstream ss(x);
+
+            ss >> number;
+            if (number == 1 || number == 0) {
+                flag = false;
+            }
+            else {
+                std::cout << "Invalid input, please try again:" << std::endl;
+                flag = true;
+            }
         }
-        if(x == 0) {
-            return;
-        }
-        else if(x == 1) {
+        if (flag == false) {
+            if (number == 0) {
+                return;
+            } else if (number == 1) {
+                std::string km;
                 std::cout << "Set the distance you are willing to walk! (km)" << std::endl;
                 cin >> km;
                 while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(km)) {
@@ -391,6 +429,8 @@ void InfoSTCP::walkingDistance() {
                 else{
                     walking = true;
                 }
+                flag = true;
+            }
         }
     }
 }
@@ -414,8 +454,13 @@ bool InfoSTCP::isDouble(std::string num) {
 }
 
 void InfoSTCP::meansTransport() {
-    while(true) {
-        int x;
+    bool flag = true;
+
+    int number = 50;
+
+    while (flag) {
+        std::string x;
+
         std::string autocarro = bus ? "ON" : "OFF";
         std::string eletrico = eletric ? "ON" : "OFF";
         std::string n = noturno ? "ON" : "OFF";
@@ -423,24 +468,40 @@ void InfoSTCP::meansTransport() {
         std::cout << "2) Eletric -> " << eletrico << std::endl;
         std::cout << "3) Periodo Noturno -> " << n << std::endl;
         std::cout << "0) Exit" << std::endl;
+
         cin >> x;
-        while (std::cin.fail() || std::cin.peek() != '\n' || x > 3) {
+
+        if(std::cin.fail() || std::cin.peek() != '\n' || x.size() != 1 || !isNumber(x)) {
             std::cout << "Invalid input, please try again: " << std::endl;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
             std::cin.clear();
-            cin >> x;
+            flag = true;
+        }else {
+            std::stringstream ss(x);
+
+            ss >> number;
+            if (number == 1 || number == 2 || number == 0 || number == 3) {
+                flag = false;
+            }
+            else {
+                std::cout << "Invalid input, please try again:" << std::endl;
+                flag = true;
+            }
         }
-        if(x == 0) {
-            applyMeans();
-            return;
-        }
-        if(x == 1) {
-            bus ? bus = false : bus = true;
-        }
-        else if(x == 2) {
-            eletric ? eletric = false : eletric = true;
-        }else if(x == 3) {
-            noturno ? noturno = false : noturno = true;
+        if (flag == false) {
+            if (number == 0) {
+                applyMeans();
+                return;
+            } else if (number == 1) {
+                bus ? bus = false : bus = true;
+                flag = true;
+            } else if (number == 2) {
+                eletric ? eletric = false : eletric = true;
+                flag = true;
+            }else if(number == 3){
+                noturno ? noturno = false : noturno = true;
+                flag = true;
+            }
         }
     }
 }
@@ -498,7 +559,53 @@ Stop* InfoSTCP::searchByCoordinates(double lat, double lonj) {
 }
 
 
-void InfoSTCP::originMenu() {
+Stop* InfoSTCP::originMenu() {
+    bool flag = true;
+
+    int number = 50;
+
+    while (flag) {
+        std::string x;
+
+        std::cout << "How would you rather give the info of Origin Stop:" <<  std::endl;
+        std::cout << "1) By Code" << std::endl;
+        std::cout << "2) By Name" << std::endl;
+        std::cout << "3) By Coordinates" << std::endl;
+        std::cout << "0) Exit" << std::endl;
+
+        cin >> x;
+
+        if(std::cin.fail() || std::cin.peek() != '\n' || x.size() != 1 || !isNumber(x)) {
+            std::cout << "Invalid input, please try again: " << std::endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+            std::cin.clear();
+            flag = true;
+        }else {
+            std::stringstream ss(x);
+
+            ss >> number;
+            if (number == 1 || number == 2 || number == 0 || number == 3) {
+                flag = false;
+            }
+            else {
+                std::cout << "Invalid input, please try again:" << std::endl;
+                flag = true;
+            }
+        }
+        if (flag == false) {
+            if (number == 0) {
+                return nullptr;
+            } else if (number == 1) {
+                walkingDistance();
+                flag = true;
+            } else if (number == 2) {
+                meansTransport();
+                flag = true;
+            }else if(number == 3){
+                flag = true;
+            }
+        }
+    }
     while(true) {
         int x;
         std::cout << "How would you rather give the info of Origin Stop:" <<  std::endl;
@@ -522,7 +629,7 @@ void InfoSTCP::originMenu() {
                 std::cout << "Couldn't find the Stop" << std::endl;
                 continue;
             }
-            return;
+            return nullptr;
         }
         if(x == 2) {
             std::string name;
@@ -533,7 +640,7 @@ void InfoSTCP::originMenu() {
             for(auto x : lista) {
                 cout << x->getCode() << " : " << x->getLatitude() << " : " << x->getLongitude() << std::endl;
             }
-            return;
+            return nullptr;
         }
         else if(x == 3) {
             std::string lon,lat;
@@ -560,15 +667,15 @@ void InfoSTCP::originMenu() {
                 std::cout << "Couldn't find the Stop" << std::endl;
                 continue;
             }
-            return;
+            return nullptr;
 
         }else if(x == 0) {
-            return;
+            return nullptr;
         }
     }
 }
 
-void InfoSTCP::destinyMenu() {
+Stop* InfoSTCP::destinyMenu() {
     while(true) {
         int x;
         std::cout << "How would you rather give the info of Destiny Stop:" <<  std::endl;
@@ -592,7 +699,7 @@ void InfoSTCP::destinyMenu() {
                 std::cout << "Couldn't find the Stop" << std::endl;
                 continue;
             }
-            return;
+            return nullptr;
         }
         if(x == 2) {
             std::string name;
@@ -603,7 +710,7 @@ void InfoSTCP::destinyMenu() {
             for(auto x : lista) {
                 cout << x->getCode() << " : " << x->getLatitude() << " : " << x->getLongitude() << std::endl;
             }
-            return;
+            return nullptr;
         }
         else if(x == 3) {
             std::string lon,lat;
@@ -630,10 +737,10 @@ void InfoSTCP::destinyMenu() {
                 std::cout << "Couldn't find the Stop" << std::endl;
                 continue;
             }
-            return;
+            return nullptr;
 
         }else if(x == 0) {
-            return;
+            return nullptr;
         }
     }
 }

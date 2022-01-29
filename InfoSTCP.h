@@ -40,6 +40,8 @@ private:
     void lessStops();
     void lessDistance();
     bool inArtificialLineVec(Stop *s1,Stop *s2);
+    Stop* originMenu();
+    Stop* destinyMenu();
     bool bus,eletric,walking,noturno;
 public:
     InfoSTCP();
@@ -52,8 +54,6 @@ public:
     void menu();
     bool isDouble(std::string num);
     void meansTransport();
-    void originMenu();
-    void destinyMenu();
 };
 
 
