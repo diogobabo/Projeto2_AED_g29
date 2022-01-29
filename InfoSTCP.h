@@ -43,6 +43,7 @@ private:
     void bestPath();
     bool bus,eletric,walking,noturno;
     bool leastStops,leastDistance,leastWalking,cheapest,leastBusChange;
+
 public:
     InfoSTCP();
     void setNewWalkDistance(double newWalkingDistance);

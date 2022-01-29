@@ -1,5 +1,5 @@
 
-#include <queue>
+
 #include "graph.h"
 
 // Constructor: nr nodes and direction (default: undirected)
@@ -95,6 +95,55 @@ std::list<int> Graph::bfs_path(int a, int b) {
 void Graph::addNode(Stop *stop1) {
     nodes.push_back(stop1);
     size = size +1;
+}
+
+std::list<int> Graph::dijkstra_cheap_path(int a, int b) {
+    dijkstra_Cheap(a);
+    list<int> path;
+    if (nodes[b]->dist == INF) return path;
+    path.push_back(b);
+    int v = b;
+    while (v != a) {
+        v = nodes[v]->getPred();
+        path.push_front(v);
+    }
+    return path;
+}
+
+void Graph::dijkstra_Cheap(int s) {
+    MinHeap<int, int> q(size, -1);
+    map<string,int> values;
+    for (int v=1; v<size; v++) {
+        nodes[v]->dist = INF;
+        q.insert(v, INF);
+        nodes[v]->visited = false;
+    }
+    nodes[s]->dist = 0;
+    q.decreaseKey(s, 0);
+    nodes[s]->setPred(s,new Line(Line::START)) ;
+    values.insert(pair<string,int>(nodes[s]->getZone(),0));
+    while (q.getSize()>0) {
+        int u = q.removeMin();
+        nodes[u]->visited = true;
+        for (auto e : nodes[u]->getAdj()) {
+            if(e->null)continue;
+            int v = e->getDest()->getNum();
+            int w;
+            if(values.find(nodes[v]->getZone()) != values.end()){
+                w = min(values.find(nodes[v]->getZone())->second,values.find(nodes[u]->getZone())->second+1);
+                values.insert(pair<string,int>(nodes[v]->getZone(),w));
+            }
+            else{
+                values.insert(pair<string,int>(nodes[v]->getZone(),values.find(nodes[u]->getZone())->second+1));
+                w = values.find(nodes[v]->getZone())->second;
+            }
+            if (!nodes[v]->visited && nodes[u]->dist + w < nodes[v]->dist) {
+                nodes[v]->dist = nodes[u]->dist + w;
+                q.decreaseKey(v, nodes[v]->dist);
+                nodes[v]->setPred(u,e);
+            }
+        }
+    }
 }
 
 

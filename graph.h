@@ -9,6 +9,8 @@
 #include "Stop.h"
 #include <algorithm>
 #include "MinHeap.h"
+#include <queue>
+#include <map>
 
 #define INF (INT_MAX/2)
 
@@ -26,7 +28,9 @@ public:
     void addEdge(int src,Line *line);
     std::list<int> dijkstra_path(int a, int b);
     std::list<int> bfs_path(int a, int b);
+    std::list<int> dijkstra_cheap_path(int a, int b);
     void dijkstra(int s);
+    void dijkstra_Cheap(int s);
     void bfs(int v);
     void addNode(Stop *stop1);
 };

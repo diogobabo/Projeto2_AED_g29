@@ -307,7 +307,23 @@ void InfoSTCP::menu() {
 
 void InfoSTCP::printBestPath(Stop *s1, Stop *s2) {
 
-    std::list<int> l = graph.dijkstra_path(stopMap.find(s1->getCode())->second,stopMap.find(s2->getCode())->second);
+    std::list<int> l;
+
+    if(leatsStops){
+        l = graph.bfs_path(stopMap.find(s1->getCode())->second,stopMap.find(s2->getCode())->second);
+    }
+    else if(leastDistance){
+        l = graph.dijkstra_path(stopMap.find(s1->getCode())->second,stopMap.find(s2->getCode())->second);
+    }
+    else if(cheapest){
+        l = graph.dijkstra_cheap_path(stopMap.find(s1->getCode())->second,stopMap.find(s2->getCode())->second);
+    }
+    else if(leastBuschange){
+
+    }
+    else if(def){
+
+    }
 
     if(l.empty()){
         std::cout << " There is no viable Path with the current settings" <<std::endl;
@@ -319,7 +335,7 @@ void InfoSTCP::printBestPath(Stop *s1, Stop *s2) {
         else if(stopsVec[sus]->getLinePred()->type == Line::WALKING)
             std::cout << "From here: " <<stopsVec[sus]->getLinePred()->getCode() << " Walk " << stopsVec[sus]->getLinePred()->getDistance()<< " km to " << stopsVec[sus]->getName()+" "+ stopsVec[sus]->getCode()  << " " <<std::endl;
         else{
-            std::cout << "Get here - " <<stopsVec[sus]->getCode() << " also known as -" << stopsVec[sus]->getName() << " By using line - " << stopsVec[sus]->getLinePred()->getCode()<<std::endl;
+            std::cout << "Get here - " <<stopsVec[sus]->getCode() << " also known as -" << stopsVec[sus]->getName() << " By using line - " << stopsVec[sus]->getLinePred()->getCode()<< " " + stopsVec[sus]->getZone()<<std::endl;
         }
     }
 
