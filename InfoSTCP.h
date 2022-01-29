@@ -1,7 +1,3 @@
-//
-// Created by Diogo Babo on 25/01/2022.
-//
-
 #ifndef PROJETO2_AED_INFOSTCP_H
 #define PROJETO2_AED_INFOSTCP_H
 
@@ -21,6 +17,7 @@ private:
     /**
     * returns a list of pointers to stops with a certain name
     * @returns a list of pointers to stops
+     * @TimeComplexity : O(N)
     */
     list <Stop*> searchByName();
 
@@ -40,6 +37,7 @@ private:
         * checks if a string is a number
         * @param s(given string)
         * @return if s is a number or not
+        * @TimeComplexity : O(N)
      **/
     static bool isNumber(const std::string &s);
 
@@ -70,11 +68,13 @@ private:
 
     /**
         * resets the weight of the edges(0)
+        * @TimeComplexity : O(N)
      **/
     void resetWeight();
 
     /**
         * creates new walking lines depending on the lastwalking distance
+        * @TimeComplexity : O(N^2)
         * @param lastWalkingDistance
      **/
     void enlargeArtificialLineVec(double lastWalkingDistance);
@@ -96,7 +96,8 @@ private:
     void settings();
 
     /**
-        * displays the means menu
+        * applies the transport specifications
+        * @TimeComplexity : O(N)
      **/
     void applyMeans();
 
