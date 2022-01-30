@@ -315,6 +315,7 @@ void InfoSTCP::nonStandard() {
         std::cout << "1) Search without starting station" << std::endl;
         std::cout << "2) Add Line" << std::endl;
         std::cout << "3) Add Stop" << std::endl;
+        std::cout << "3) Show Near Stations" << std::endl;
         std::cout << "0) Exit" << std::endl;
 
         std::string x;
@@ -345,7 +346,7 @@ void InfoSTCP::nonStandard() {
             if (number == 0) {
                 return;
             } else if (number == 1) {
-
+                pathWithoutLocation();
             } else if (number == 2) {
                 settings();
                 flag = true;
@@ -356,7 +357,9 @@ void InfoSTCP::nonStandard() {
         }
     }
 }
+void InfoSTCP::pathWithoutLocation(){
 
+}
 void InfoSTCP::printBestPath(Stop *s1, Stop *s2) {
     resetWeight();
     std::list<int> l;
