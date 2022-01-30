@@ -151,6 +151,7 @@ private:
         * responsible for adding a line
      **/
     void lineMenu();
+    void showNearStation();
     bool bus,eletric,walking,noturno;
     bool leastStops,leastDistance,leastWalking,cheapest;
 

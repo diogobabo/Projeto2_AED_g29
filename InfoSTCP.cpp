@@ -396,6 +396,9 @@ void InfoSTCP::nonStandard() {
             }else if (number == 3) {
                 addStop();
                 flag = true;
+            }else if(number == 4){
+                showNearStation();
+                flag = true;
             }
         }
     }
@@ -947,9 +950,9 @@ void InfoSTCP::bestPath() {
         std::string lPrice = cheapest ? "ON" : "OFF";
         std::string lWalking = leastWalking ? "ON" : "OFF";
         std::cout << "1) Least Stops -> " << lStops << std::endl;
-        std::cout << "2) Least Distance -> " << lDistance << std::endl;
+        std::cout << "2) Least Distance Overall -> " << lDistance << std::endl;
         std::cout << "3) Least Price -> " << lPrice << std::endl;
-        std::cout << "4) Least Walking -> " << lWalking << std::endl;
+        std::cout << "4) Prioritise Transport Over Walking -> " << lWalking << std::endl;
         std::cout << "0) Exit" << std::endl;
 
         cin >> x;
@@ -1014,7 +1017,7 @@ void InfoSTCP::resetWeight() {
 
 void InfoSTCP::leastWalkingLines() {
     for(auto it = lineVec.begin(); it != lineVec.end(); it++) {
-        (*it)->setWeight(0.02);
+        (*it)->setWeight(0.015);
     }
     for(auto it = artificialLineVec.begin(); it != artificialLineVec.end(); it++) {
         (*it)->setWeight((*it)->getDistance());
@@ -1073,4 +1076,42 @@ void InfoSTCP::lineMenu() {
     Line* linha = new Line(l1);
     s2->addOutgoingLine(linha);
     lineVec.push_back(linha);
+
+}
+
+void InfoSTCP::showNearStation() {
+    std::string lon,lat;
+    std::cout << "Type the Latitude Of The Stop!" << std::endl;
+    cin >> lat;
+    while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lat)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> lat;
+    }
+    double latitude = std::stod(lat);
+    std::cout << "Type the Longitude Of The Stop!" << std::endl;
+    cin >> lon;
+    while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lon)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> lon;
+    }
+    double longitude = std::stod(lon);
+
+    Stop s1(stopMap.size() + 1,"Virtual","Virtual","Virtual",latitude,longitude);
+    Stop *stop = new Stop(s1);
+
+    list<Stop *> l;
+    for(auto x:stopsVec){
+        if(haversine(stop,x) <= 1){
+            l.push_back(x);
+        }
+    }
+    delete stop;
+    cout << "Neaby stations in a 1km range"<<endl;
+    for(auto sus:l){
+        cout << sus->getCode() << " also known as -" << sus->getName()<<endl;
+    }
 }
