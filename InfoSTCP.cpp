@@ -298,7 +298,7 @@ void InfoSTCP::menu() {
                 settings();
                 flag = true;
             }else if (number == 3) {
-                settings();
+                nonStandard();
                 flag = true;
             }
         }
