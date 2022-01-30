@@ -76,6 +76,11 @@ public:
     * @param stop1
    **/
     void addNode(Stop *stop1);
+    /**
+   * pops last node of the graph
+    *
+   **/
+    void popNode();
 };
 
 #endif

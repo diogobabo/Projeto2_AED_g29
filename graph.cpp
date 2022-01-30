@@ -89,7 +89,7 @@ std::list<int> Graph::bfs_path(int a, int b) {
         v = nodes[v]->getPred();
         path.push_front(v);
     }
-    return path;
+     return path;
 }
 
 void Graph::addNode(Stop *stop1) {
@@ -144,4 +144,9 @@ void Graph::dijkstra_Cheap(int s) {
             }
         }
     }
+}
+
+void Graph::popNode() {
+    nodes.pop_back();
+    size = size -1;
 }

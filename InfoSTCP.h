@@ -129,9 +129,23 @@ private:
      **/
   
     void bestPath();
+    /**
+        * sets walking lines and normal lines disance a set value
+     **/
     void leastWalkingLines();
+    /**
+       * menu for non standar options
+    **/
     void nonStandard();
+    /**
+       * menu for search without starting point
+    **/
     void pathWithoutLocation();
+    /**
+       * @param stop
+       * adds adj lines acording do walking distance to a given stop
+    **/
+    void addAdjToVirtualStop(Stop *stop);
 
     /**
         * responsible for adding a line
