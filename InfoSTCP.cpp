@@ -345,17 +345,7 @@ void InfoSTCP::nonStandard() {
             if (number == 0) {
                 return;
             } else if (number == 1) {
-                flag = true;
-                Stop *s1,*s2;
-                s1 = originMenu();
-                if(s1 == nullptr){
-                    continue;
-                }
-                s2 = destinyMenu();
-                if(s2 == nullptr){
-                    continue;
-                }
-                printBestPath(s1,s2);
+
             } else if (number == 2) {
                 settings();
                 flag = true;
