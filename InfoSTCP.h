@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 #include "Line.h"
-#include "bst.h"
 #include "Stop.h"
 #include <cmath>
 #include "GetDataSet.h"
