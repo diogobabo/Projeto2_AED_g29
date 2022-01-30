@@ -146,6 +146,11 @@ private:
        * adds adj lines acording do walking distance to a given stop
     **/
     void addAdjToVirtualStop(Stop *stop);
+
+    /**
+        * responsible for adding a line
+     **/
+    void lineMenu();
     bool bus,eletric,walking,noturno;
     bool leastStops,leastDistance,leastWalking,cheapest;
 
@@ -169,16 +174,9 @@ public:
     void readLines(const std::string& filename);
 
     /**
-       * adds a stop
-       * @param code
-       * @param name
-       * @param zone
-       * @param lat
-       * @param lon
-    **/
-    void addStop(std::string code, std::string name, std::string zone, long lat, long lon);
-
-    void addLine();
+        * responsible for adding a stop
+     **/
+    void addStop();
 
     void checkInput();
 
