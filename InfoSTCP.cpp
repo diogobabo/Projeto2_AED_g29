@@ -152,16 +152,59 @@ double InfoSTCP::haversine(Stop* stop1,Stop* stop2)
     return rad * c;
 }
 
-void InfoSTCP::addStop(std::string code, std::string name, std::string zone, long lat, long lon) {
+void InfoSTCP::addStop() {
+    std::string code,name,zone;
+    std::cout << "Code of the Stop:" << std::endl;
+    cin >> code;
+    while (std::cin.fail() || std::cin.peek() != '\n') {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> code;
+    }
+    std::cout << "Name of the Stop:" << std::endl;
+    cin >> name;
+    while (std::cin.fail() || std::cin.peek() != '\n') {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> name;
+    }
+    std::cout << "Zone of the Stop:" << std::endl;
+    cin >> zone;
+    while (std::cin.fail() || std::cin.peek() != '\n') {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> zone;
+    }
+    std::string lon,lat;
+    std::cout << "Type the Latitude Of The Stop!" << std::endl;
+    cin >> lat;
+    while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lat)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> lat;
+    }
+    double latitude = std::stod(lat);
+    std::cout << "Type the Longitude Of The Stop!" << std::endl;
+    cin >> lon;
+    while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lon)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> lon;
+    }
+    double longitude = std::stod(lon);
     int number;
     number = stopMap.size() + 1;
-    Stop stop1(number,code,name,zone,lat,lon);
+    Stop stop1(number,code,name,zone,latitude,longitude);
     Stop * stop = new Stop(stop1);
     pair<std::string,int> stopPair(code,number);
     stopMap.insert(stopPair);
     stopsVec.push_back(stop);
     graph.addNode(stop);
-
 }
 
 
@@ -348,10 +391,10 @@ void InfoSTCP::nonStandard() {
             } else if (number == 1) {
                 pathWithoutLocation();
             } else if (number == 2) {
-                settings();
+                lineMenu();
                 flag = true;
             }else if (number == 3) {
-                settings();
+                addStop();
                 flag = true;
             }
         }
@@ -919,4 +962,58 @@ void InfoSTCP::leastWalkingLines() {
     for(auto it = artificialLineVec.begin(); it != artificialLineVec.end(); it++) {
         (*it)->setWeight((*it)->getDistance());
     }
+}
+
+void InfoSTCP::lineMenu() {
+    Stop* s2 = originMenu();
+    if(s2 == nullptr) {
+        return;
+    }
+    std::string code,name,night,type;
+    bool atNight;
+    Line::TYPE tipo;
+    std::cout << "Type the code of the line!" << std::endl;
+    cin >> code;
+    while (std::cin.fail() || std::cin.peek() != '\n') {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> code;
+    }
+    std::cout << "Type the name of The Line!" << std::endl;
+    cin >> name;
+    while (std::cin.fail() || std::cin.peek() != '\n') {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> name;
+    }
+    Stop* s1 = destinyMenu();
+    if(s1 == nullptr) {
+        return;
+    }
+    std::cout << "Type the schedule of the line (day or night)!" << std::endl;
+    cin >> night;
+    while (std::cin.fail() || std::cin.peek() != '\n' || (night != "day" && night != "night")) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> night;
+    }
+    (night == "day") ? atNight = false : atNight = true;
+    std::cout << "Type the type of the line (AUTOCARRO or ELETRICO)!" << std::endl;
+    cin >> type;
+    while (std::cin.fail() || std::cin.peek() != '\n' || (type != "AUTOCARRO" && type != "ELETRICO")) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> type;
+    }
+    (type == "AUTOCARRO") ? tipo = Line::AUTOCARRO : tipo = Line::ELETRICO;
+    double dis = haversine(s1,s2);
+    code = code + "M";
+    Line l1(code,name,s1,atNight,dis,tipo);
+    Line* linha = new Line(l1);
+    s2->addOutgoingLine(linha);
+    lineVec.push_back(linha);
 }
