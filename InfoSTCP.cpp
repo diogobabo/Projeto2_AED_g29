@@ -315,7 +315,7 @@ void InfoSTCP::nonStandard() {
         std::cout << "1) Search without starting station" << std::endl;
         std::cout << "2) Add Line" << std::endl;
         std::cout << "3) Add Stop" << std::endl;
-        std::cout << "3) Show Near Stations" << std::endl;
+        std::cout << "4) Show Near Stations" << std::endl;
         std::cout << "0) Exit" << std::endl;
 
         std::string x;
@@ -336,7 +336,7 @@ void InfoSTCP::nonStandard() {
 
             ss >> number;
 
-            if (number == 1 || number == 2 || number == 0|| number == 3) {
+            if (number == 1 || number == 2 || number == 0|| number == 3|| number == 4) {
                 flag = false;
             } else {
                 std::cout << "Invalid input, please try again:" << std::endl;
@@ -358,7 +358,60 @@ void InfoSTCP::nonStandard() {
     }
 }
 void InfoSTCP::pathWithoutLocation(){
+    std::string lon,lat;
+    std::cout << "Type the Latitude Of The Stop!" << std::endl;
+    cin >> lat;
+    while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lat)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> lat;
+    }
+    double latitude = std::stod(lat);
+    std::cout << "Type the Longitude Of The Stop!" << std::endl;
+    cin >> lon;
+    while (std::cin.fail() || std::cin.peek() != '\n' || !isDouble(lon)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input, please try again: " << std::endl;
+        cin >> lon;
+    }
+    double longitude = std::stod(lon);
 
+    Stop s1(stopMap.size() + 1,"Virtual","Virtual","Virtual",latitude,longitude);
+    Stop *stop = new Stop(s1);
+
+    addAdjToVirtualStop(stop);
+
+    Stop *S2 = destinyMenu();
+
+    if(S2 == nullptr){
+        return;
+    }
+
+    graph.addNode(stop);
+    stopMap.insert(pair<string,int>(stop->getCode(),stop->getNum()));
+    stopsVec.push_back(stop);
+    printBestPath(stop,S2);
+    graph.popNode();
+    stopMap.erase(stop->getCode());
+    stopsVec.pop_back();
+
+    for(auto l:stop->getAdj()){
+        delete l;
+    }
+    delete stop;
+}
+
+void InfoSTCP::addAdjToVirtualStop(Stop *stop) {
+    for(auto s:stopsVec){
+        double distance = haversine(stop,s);
+        if( distance <= maxWalkingDistance){
+            Line l1(stop->getCode(),"Walk to: "+s->getName()+" Stop", s,false,distance,Line::WALKING);
+            Line *l11 = new Line(l1);
+            stop->addOutgoingLine(l11);
+        }
+    }
 }
 void InfoSTCP::printBestPath(Stop *s1, Stop *s2) {
     resetWeight();
@@ -523,17 +576,21 @@ void InfoSTCP::walkingDistance() {
 
 bool InfoSTCP::isDouble(std::string num) {
     bool isDD = true;
-    int counter = 0;
+    int counter2 = 0, counter1 = 0;
     for(int i = 0; i < num.length(); i++) {
         if(num[i] == '.') {
-            counter++;
+            counter1++;
+            continue;
+        }
+        if(num[i] == '-') {
+            counter2++;
             continue;
         }
         if(isdigit(num[i]) == false) {
             isDD = false;
         }
     }
-    if(counter <= 1 && isDD) {
+    if(counter1 <= 1 && counter2 <= 1 && isDD) {
         return true;
     }
     return false;
