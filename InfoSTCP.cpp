@@ -240,8 +240,9 @@ void InfoSTCP::showMenu() {
     std::cout << "|    *OPTIONS*                                     (      City Bus | - -            |" <<  std::endl;
     std::cout << "|                                                   =--OO-------OO--=dwb            |" <<  std::endl;
     std::cout << "|    0 -> EXIT                                                                      |" <<  std::endl;
-    std::cout << "|    1 -> SEARCH                                                                    |" <<  std::endl;
+    std::cout << "|    1 -> STANDARD SEARCH                                                           |" <<  std::endl;
     std::cout << "|    2 -> SETTINGS                                                                  |" <<  std::endl;
+    std::cout << "|    3 -> NON-STANDARD MENU                                                         |" <<  std::endl;
     std::cout << "|                                                                                   |" <<  std::endl;
     std::cout << " ------------------------------------------------------------------------------------" <<  std::endl;
 }
@@ -272,7 +273,7 @@ void InfoSTCP::menu() {
 
             ss >> number;
 
-            if (number == 1 || number == 2 || number == 0) {
+            if (number == 1 || number == 2 || number == 0|| number == 3) {
                 flag = false;
             } else {
                 std::cout << "Invalid input, please try again:" << std::endl;
@@ -294,6 +295,71 @@ void InfoSTCP::menu() {
                 }
                 printBestPath(s1,s2);
             } else if (number == 2) {
+                settings();
+                flag = true;
+            }else if (number == 3) {
+                settings();
+                flag = true;
+            }
+        }
+    }
+}
+
+void InfoSTCP::nonStandard() {
+    bool flag = true;
+
+    int number = 50;
+
+    while (flag) {//checks the input
+
+        std::cout << "1) Search without starting station" << std::endl;
+        std::cout << "2) Add Line" << std::endl;
+        std::cout << "3) Add Stop" << std::endl;
+        std::cout << "0) Exit" << std::endl;
+
+        std::string x;
+
+        std::cin >> x;
+
+        if (std::cin.fail() || std::cin.peek() != '\n' || x.size() != 1 || !isNumber(x)) {
+            std::cout << "Invalid input, please try again: " << std::endl;
+
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.clear();
+
+            flag = true;
+
+        } else {
+
+            std::stringstream ss(x);
+
+            ss >> number;
+
+            if (number == 1 || number == 2 || number == 0|| number == 3) {
+                flag = false;
+            } else {
+                std::cout << "Invalid input, please try again:" << std::endl;
+            }
+        }
+        if (flag == false) {
+            if (number == 0) {
+                return;
+            } else if (number == 1) {
+                flag = true;
+                Stop *s1,*s2;
+                s1 = originMenu();
+                if(s1 == nullptr){
+                    continue;
+                }
+                s2 = destinyMenu();
+                if(s2 == nullptr){
+                    continue;
+                }
+                printBestPath(s1,s2);
+            } else if (number == 2) {
+                settings();
+                flag = true;
+            }else if (number == 3) {
                 settings();
                 flag = true;
             }

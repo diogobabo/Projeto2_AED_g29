@@ -130,6 +130,7 @@ private:
   
     void bestPath();
     void leastWalkingLines();
+    void nonStandard();
     bool bus,eletric,walking,noturno;
     bool leastStops,leastDistance,leastWalking,cheapest;
 
